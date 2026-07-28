@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+._*
+
+# scratch
+.probe
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Working files produced by the skills.
+# These can contain client data - never commit them.
+work/
+out/
+*.xlsx
+*.xlsm
+unmatched.csv
+unexplained.csv
+review_notes.csv
+classifications.csv
+
+# Client source documents - belt and braces, in case anyone
+# clones this repo and works inside it.
+*.pdf
+!docs/**/*.pdf
