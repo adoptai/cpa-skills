@@ -49,7 +49,7 @@ Ask for whatever is missing before starting:
    organizer, and payment records for estimates and extensions.
 3. **The prior-year return as filed** — and the prior-year carryforward schedules.
 4. **The engagement's review checklist**, if the firm has one. If not, use
-   `reference/checklists.md` and say which you used.
+   `references/checklists.md` and say which you used.
 5. **Entity and year** — return type, tax year, states, and whether this is an original or
    amended return.
 
@@ -242,7 +242,7 @@ pip install openpyxl
 
 If you installed the `.skill` package these files are already in place and you can ignore this appendix. If you copied the skill as text, create the files below at the paths shown, alongside your `SKILL.md`. The skill will not run without them.
 
-## `reference/checklists.md`
+## `references/checklists.md`
 
 ```markdown
 # Review Checklists

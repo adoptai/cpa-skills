@@ -1,0 +1,13 @@
+{
+  "name": "cpa-skills",
+  "description": "Local-first accounting and tax skills for AI agents — bank statement extraction, bank reconciliation, tax return review, year-over-year variance, and journal entry anomaly scanning",
+  "version": "1.0.0",
+  "author": {
+    "name": "Adopt AI",
+    "url": "https://adopt.ai"
+  },
+  "homepage": "https://github.com/adoptai/cpa-skills",
+  "repository": "https://github.com/adoptai/cpa-skills",
+  "license": "MIT",
+  "skills": "./skills"
+}

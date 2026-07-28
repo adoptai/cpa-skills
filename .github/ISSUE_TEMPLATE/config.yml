@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security or confidentiality concern
+    url: https://github.com/adoptai/cpa-skills/security/advisories/new
+    about: Report privately. Do not open a public issue, and do not include client data.
+  - name: Contributing guide
+    url: https://github.com/adoptai/cpa-skills/blob/dev/CONTRIBUTING.md
+    about: Requirements for new skills, including the output-gate rule.
