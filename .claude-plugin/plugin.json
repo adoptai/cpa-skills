@@ -1,7 +1,7 @@
 {
   "name": "cpa-skills",
-  "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, and revenue tracing",
-  "version": "1.2.0",
+  "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, reconciliation review, and trial balance integrity",
+  "version": "1.3.0",
   "author": {
     "name": "Adopt AI",
     "url": "https://adopt.ai"

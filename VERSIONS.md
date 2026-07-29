@@ -3,11 +3,16 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.2.0**
+Repository version: **1.3.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
 | `ar-aging-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
+| `bank-rec-review` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `cash-flow-tieout` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `cutoff-and-unrecorded-liabilities` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `expense-policy-testing` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `trial-balance-integrity` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `audit-sampling` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `bank-statement-to-excel` | 1.0.0 | 2026-07-28 | Initial release |
 | `bank-rec-to-gl` | 1.0.0 | 2026-07-28 | Initial release |
@@ -20,6 +25,50 @@ Repository version: **1.2.0**
 | `sales-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+
+---
+
+## 1.3.0 — 2026-07-29
+
+Five skills added, bringing the repository to eighteen. No changes to the existing thirteen.
+
+**`cash-flow-tieout`** — Indirect-method statement of cash flows, with working capital movements
+**derived from the balance sheet** rather than taken from the statement, because the usual failure
+is a plug hidden in an "other" caption that survives review when only the bottom line is checked.
+Contra-asset accounts are deliberately excluded from working capital: their movement *is* the
+non-cash charge added back separately, so deriving them too would double-count it. Instead each
+non-operating movement is cross-checked — contra accounts against the non-cash charge, PP&E against
+capital expenditure, debt against draws and repayments, equity against net income and
+distributions. In testing, a statement that footed perfectly with a 60,000 plug hidden in "Other
+operating activities" was caught twice: once by the PP&E reconciliation and once by the
+material-"other" test.
+
+**`expense-policy-testing`** — Tests an expense, T&E, or corporate card population against the
+client's own written policy across fourteen exception types, including split transactions
+engineered to stay under an approval threshold. Output is organised by employee and by approver
+before transaction, because the findings are behavioural: an approver whose exception rate is far
+above peers is approving without reading, and that explains the other findings. If no written
+policy exists, that is the headline finding.
+
+**`cutoff-and-unrecorded-liabilities`** — Search for unrecorded liabilities and cutoff testing.
+This procedure works on what was *not* recorded, so it cannot sample from its own population; the
+gates reflect that. Classification depends on the **service date** — when goods transferred or
+services were performed — not the invoice or payment date, and a missing service date is treated as
+unclassified rather than guessed. Includes a seventeen-item accrual completeness checklist where
+"not applicable" is a valid answer with a reason and a blank is not.
+
+**`bank-rec-review`** — Auditing a reconciliation someone else prepared, which is a different
+procedure from preparing one. Recomputes from item detail rather than the preparer's subtotals, and
+tests **subsequent clearance** — the one procedure that catches a fabricated item, a stale item, and
+a plug alike, because a real reconciling item appears in the next period's bank statement and a
+fabricated one never does.
+
+**`trial-balance-integrity`** — Run this first on a new client, a cleanup, or a conversion, because
+everything else assumes the trial balance is sound. Debits equalling credits is enforced by every
+accounting system and proves almost nothing; this tests that every account maps to a statement line,
+that the mapping foots, and that duplicates like `Repairs & Maintenance` and `Repairs and
+Maintenance` are surfaced. Nothing is merged automatically — merging changes comparatives and is a
+decision.
 
 ---
 

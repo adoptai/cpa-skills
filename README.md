@@ -38,6 +38,11 @@ relied on and signed.
 | `sales-tax-reconciliation` | returns tie to the ledger, the liability rollforward foots, and every jurisdiction with sales has a return or a documented nexus conclusion |
 | `ar-aging-tie-out` | the aging ties to the GL control account **and** every bucket recomputes from the invoice date |
 | `revenue-trace-to-source` | every selection links to invoice, contract and cash — or it is an exception, not a test |
+| `cash-flow-tieout` | net change in cash equals the balance sheet movement, and every section reconciles to it |
+| `expense-policy-testing` | the population ties to the GL and every transaction gets a disposition |
+| `cutoff-and-unrecorded-liabilities` | the search population ties, and every item is classified — unclassified is a finding |
+| `bank-rec-review` | the reconciliation is recomputed independently and every item cleared subsequently |
+| `trial-balance-integrity` | debits equal credits, every account maps to a statement line, and the mapping foots |
 
 Two consequences worth knowing up front:
 
@@ -129,6 +134,25 @@ applies the right procedure — including the parts practitioners skip under tim
         │  returns ↔ ledger ↔ GL,       │      │  aging ↔ GL, every bucket    │
         │  + nexus screening            │      │  recomputed                  │
         └───────────────────────────────┘      └──────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │   trial-balance-integrity     │   run this FIRST - everything else
+        └───────────────┬───────────────┘   assumes the TB is sound
+                        │  underpins every skill above and below
+                        ▼
+        ┌───────────────────────────────┐
+        │      cash-flow-tieout         │   BS + IS → proven statement of cash flows
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐      ┌──────────────────────────────┐
+        │ cutoff-and-unrecorded-        │      │     bank-rec-review          │
+        │ liabilities                   │      │  audits a rec someone ELSE   │
+        │ works on what was NOT booked  │      │  prepared                    │
+        └───────────────────────────────┘      └──────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │    expense-policy-testing     │   T&E ↔ written policy, by approver
+        └───────────────────────────────┘
 ```
 
 Never reconcile off an unproven extract, and never analyse variances against a prior year that
@@ -153,6 +177,11 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [sales-tax-reconciliation](skills/sales-tax-reconciliation) | Filed returns to the sales ledger to the GL, with a liability rollforward that isolates collected-but-unremitted tax. Derives rates from the returns and produces a nexus *screening* schedule rather than a conclusion. Separates marketplace-facilitated sales throughout. |
 | [ar-aging-tie-out](skills/ar-aging-tie-out) | Ties the aging to the GL control account and then recomputes every bucket from the invoice date — because the total can agree while the aging is wrong. Grosses up netted credits, tests cutoff, and uses subsequent receipts to separate collection timing from valuation. |
 | [revenue-trace-to-source](skills/revenue-trace-to-source) | Traces revenue from the GL through invoice, contract, delivery and cash. States direction and assertion explicitly, since this tests occurrence and cannot detect unrecorded revenue. Matches subsequent credit memos against tested revenue. |
+| [cash-flow-tieout](skills/cash-flow-tieout) | Indirect-method statement of cash flows with working capital **derived from the balance sheet** rather than taken from the statement. Cross-checks every non-operating movement, so a plug hidden in an "other" caption is caught even when the statement foots. |
+| [expense-policy-testing](skills/expense-policy-testing) | Tests expense, T&E, and card spend against the client's own written policy across fourteen exception types including split transactions. Organised by approver first — an approver with a high exception rate explains the other findings. |
+| [cutoff-and-unrecorded-liabilities](skills/cutoff-and-unrecorded-liabilities) | Search for unrecorded liabilities and cutoff testing, working on what was *not* recorded. Classifies on the service date, not the invoice or payment date, and treats a missing service date as unclassified rather than guessing. |
+| [bank-rec-review](skills/bank-rec-review) | Audits a reconciliation someone else prepared — recomputes from item detail, not the preparer's subtotals, and tests subsequent clearance, which is what catches a fabricated item, a stale item, and a plug alike. |
+| [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
 
 ---
 
@@ -210,6 +239,11 @@ with no command line involved.
 | Sales tax reconciliation | [`sales-tax-reconciliation.skill`](dist/sales-tax-reconciliation.skill) |
 | AR aging tie-out | [`ar-aging-tie-out.skill`](dist/ar-aging-tie-out.skill) |
 | Revenue trace to source | [`revenue-trace-to-source.skill`](dist/revenue-trace-to-source.skill) |
+| Cash flow tie-out | [`cash-flow-tieout.skill`](dist/cash-flow-tieout.skill) |
+| Expense policy testing | [`expense-policy-testing.skill`](dist/expense-policy-testing.skill) |
+| Unrecorded liabilities search | [`cutoff-and-unrecorded-liabilities.skill`](dist/cutoff-and-unrecorded-liabilities.skill) |
+| Bank rec review | [`bank-rec-review.skill`](dist/bank-rec-review.skill) |
+| Trial balance integrity | [`trial-balance-integrity.skill`](dist/trial-balance-integrity.skill) |
 
 ### Option 4: Copy and paste
 
@@ -292,6 +326,21 @@ Once installed, just describe the task:
 
 "Trace these revenue transactions to invoices and cash"
 → revenue-trace-to-source
+
+"Build the cash flow statement" / "why doesn't our cash flow tie?"
+→ cash-flow-tieout
+
+"Who is breaking expense policy?"
+→ expense-policy-testing
+
+"Search for unrecorded liabilities"
+→ cutoff-and-unrecorded-liabilities
+
+"Review the client's bank reconciliation"
+→ bank-rec-review
+
+"Does our trial balance balance, and is the chart of accounts clean?"
+→ trial-balance-integrity
 ```
 
 Or invoke directly:
@@ -309,8 +358,12 @@ Or invoke directly:
 - `bank-statement-to-excel` — PDF statements to proven transaction detail
 - `k1-extract-summarize` — K-1 packages to a footed, box-by-box summary
 
+### Foundational — run before the rest
+- `trial-balance-integrity` — TB balances, every account mapped, duplicates surfaced
+
 ### Reconciliation and close
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
+- `cash-flow-tieout` — indirect-method cash flow proved to the balance sheet
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
 - `three-way-match` — AP completeness and the GRNI accrual
@@ -327,6 +380,9 @@ Or invoke directly:
 ### Audit and assurance
 - `audit-sampling` — reproducible MUS, stratified, and attribute selection
 - `revenue-trace-to-source` — revenue occurrence, with the direction stated
+- `cutoff-and-unrecorded-liabilities` — completeness of liabilities and cutoff
+- `bank-rec-review` — auditing a reconciliation someone else prepared
+- `expense-policy-testing` — T&E and card spend against written policy
 - `journal-entry-anomaly-scan` — full-population JE testing with risk ranking
 - `three-way-match` — purchasing and payables control testing
 - `ar-aging-tie-out` — receivable existence, valuation, and cutoff
