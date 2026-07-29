@@ -35,6 +35,9 @@ relied on and signed.
 | `audit-sampling` | the population ties to a control total and the selection is re-performable from a seed |
 | `three-way-match` | matched invoices plus exceptions equal the whole population |
 | `depreciation-tie-out` | cost and accumulated depreciation rollforwards foot, beginning equals prior-year ending |
+| `sales-tax-reconciliation` | returns tie to the ledger, the liability rollforward foots, and every jurisdiction with sales has a return or a documented nexus conclusion |
+| `ar-aging-tie-out` | the aging ties to the GL control account **and** every bucket recomputes from the invoice date |
+| `revenue-trace-to-source` | every selection links to invoice, contract and cash — or it is an exception, not a test |
 
 Two consequences worth knowing up front:
 
@@ -111,6 +114,21 @@ applies the right procedure — including the parts practitioners skip under tim
         ┌───────────────────────────────┐
         │       three-way-match         │   PO ↔ invoice ↔ receiving, + GRNI accrual
         └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │       audit-sampling          │   selects a reproducible sample
+        └───────────────┬───────────────┘
+                        │  feeds selections into
+                        ▼
+        ┌───────────────────────────────┐
+        │   revenue-trace-to-source     │   GL → invoice → contract → cash
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐      ┌──────────────────────────────┐
+        │   sales-tax-reconciliation    │      │      ar-aging-tie-out        │
+        │  returns ↔ ledger ↔ GL,       │      │  aging ↔ GL, every bucket    │
+        │  + nexus screening            │      │  recomputed                  │
+        └───────────────────────────────┘      └──────────────────────────────┘
 ```
 
 Never reconcile off an unproven extract, and never analyse variances against a prior year that
@@ -132,6 +150,9 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [audit-sampling](skills/audit-sampling) | MUS/PPS, stratified, and attribute selection with a mandatory seed so the sample can be re-performed exactly. Population must tie to a control total; negative balances need an explicit decision. Projects with tainting. |
 | [three-way-match](skills/three-way-match) | PO to invoice to receiving, with four duplicate-detection patterns, quantity and price tolerances, vendor-level pattern rollup, and a quantified goods-received-not-invoiced accrual. |
 | [depreciation-tie-out](skills/depreciation-tie-out) | Fixed asset register to depreciation schedule to return. Recomputes straight-line exactly; tests accelerated methods for consistency without asserting any rate. Catches disposed assets still depreciating and beginning balances that do not agree to the prior year. |
+| [sales-tax-reconciliation](skills/sales-tax-reconciliation) | Filed returns to the sales ledger to the GL, with a liability rollforward that isolates collected-but-unremitted tax. Derives rates from the returns and produces a nexus *screening* schedule rather than a conclusion. Separates marketplace-facilitated sales throughout. |
+| [ar-aging-tie-out](skills/ar-aging-tie-out) | Ties the aging to the GL control account and then recomputes every bucket from the invoice date — because the total can agree while the aging is wrong. Grosses up netted credits, tests cutoff, and uses subsequent receipts to separate collection timing from valuation. |
+| [revenue-trace-to-source](skills/revenue-trace-to-source) | Traces revenue from the GL through invoice, contract, delivery and cash. States direction and assertion explicitly, since this tests occurrence and cannot detect unrecorded revenue. Matches subsequent credit memos against tested revenue. |
 
 ---
 
@@ -186,6 +207,9 @@ with no command line involved.
 | Audit sampling | [`audit-sampling.skill`](dist/audit-sampling.skill) |
 | Three-way match | [`three-way-match.skill`](dist/three-way-match.skill) |
 | Depreciation tie-out | [`depreciation-tie-out.skill`](dist/depreciation-tie-out.skill) |
+| Sales tax reconciliation | [`sales-tax-reconciliation.skill`](dist/sales-tax-reconciliation.skill) |
+| AR aging tie-out | [`ar-aging-tie-out.skill`](dist/ar-aging-tie-out.skill) |
+| Revenue trace to source | [`revenue-trace-to-source.skill`](dist/revenue-trace-to-source.skill) |
 
 ### Option 4: Copy and paste
 
@@ -259,6 +283,15 @@ Once installed, just describe the task:
 
 "Does our depreciation schedule tie to the return?"
 → depreciation-tie-out
+
+"Do our sales tax returns tie to revenue, and which states are we missing?"
+→ sales-tax-reconciliation
+
+"Does the AR aging tie, and which receivables are really old?"
+→ ar-aging-tie-out
+
+"Trace these revenue transactions to invoices and cash"
+→ revenue-trace-to-source
 ```
 
 Or invoke directly:
@@ -281,18 +314,22 @@ Or invoke directly:
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
 - `three-way-match` — AP completeness and the GRNI accrual
+- `ar-aging-tie-out` — receivables agreement and the allowance
 - `return-yoy-variance` — period-over-period variance with enforced explanations
 
 ### Tax
 - `tax-return-review` — checklist review with evidence for every item tested
 - `k1-extract-summarize` — flow-through detail for return input
 - `depreciation-tie-out` — fixed assets and Form 4562 support
+- `sales-tax-reconciliation` — multi-jurisdiction returns and nexus screening
 - `return-yoy-variance` — prior-year comparison and analytical procedures
 
 ### Audit and assurance
 - `audit-sampling` — reproducible MUS, stratified, and attribute selection
+- `revenue-trace-to-source` — revenue occurrence, with the direction stated
 - `journal-entry-anomaly-scan` — full-population JE testing with risk ranking
 - `three-way-match` — purchasing and payables control testing
+- `ar-aging-tie-out` — receivable existence, valuation, and cutoff
 - `bank-rec-to-gl` — cash existence and completeness support
 
 ### Payroll

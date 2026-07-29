@@ -1,7 +1,7 @@
 {
   "name": "cpa-skills",
-  "description": "Local-first accounting and tax skills for AI agents — bank statement extraction, bank reconciliation, tax return review, year-over-year variance, journal entry anomaly scanning, K-1 extraction, payroll tax reconciliation, audit sampling, three-way match, and fixed asset tie-out",
-  "version": "1.1.0",
+  "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, and revenue tracing",
+  "version": "1.2.0",
   "author": {
     "name": "Adopt AI",
     "url": "https://adopt.ai"

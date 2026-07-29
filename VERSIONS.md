@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.1.0**
+Repository version: **1.2.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `ar-aging-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `audit-sampling` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `bank-statement-to-excel` | 1.0.0 | 2026-07-28 | Initial release |
 | `bank-rec-to-gl` | 1.0.0 | 2026-07-28 | Initial release |
@@ -15,8 +16,38 @@ Repository version: **1.1.0**
 | `k1-extract-summarize` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `payroll-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `return-yoy-variance` | 1.0.0 | 2026-07-28 | Initial release |
+| `revenue-trace-to-source` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
+| `sales-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+
+---
+
+## 1.2.0 — 2026-07-29
+
+Three skills added, bringing the repository to thirteen. No changes to the existing ten.
+
+**`sales-tax-reconciliation`** — Reconciles filed returns to the sales ledger and the GL, with a
+liability rollforward that isolates collected-but-unremitted tax. Asserts no rate and no nexus
+threshold: effective rates are *derived* per jurisdiction per period as tax reported ÷ taxable
+sales and compared across periods, and the output is a nexus **screening** schedule with an
+instruction to confirm each state's current threshold. Marketplace-facilitated sales are tracked
+separately throughout, because in most states they count toward the facilitator's obligation
+rather than the seller's, and aggregating them produces registrations the client does not need.
+A jurisdiction with activity and no return cannot be explained away with a reconciling item.
+
+**`ar-aging-tie-out`** — Ties the aging to the GL control account, then **recomputes every bucket
+from the invoice date** rather than trusting the report. The total can agree while the aging is
+wrong, and the aging is what drives the allowance and the credit decisions. Grosses up netted
+credit balances, tests cutoff, and where subsequent receipts are supplied distinguishes a
+collection-timing issue from a valuation one.
+
+**`revenue-trace-to-source`** — Traces revenue from the GL through invoice, contract, delivery and
+cash. States the direction and assertion on the face of the workpaper, because GL→source tests
+occurrence and **cannot** detect unrecorded revenue — if completeness is the concern this is the
+wrong procedure. Refuses to record an item as tested unless every required evidence link exists,
+reports an evidence-coverage matrix so a sample vouched to invoices alone is obvious, and matches
+subsequent-period credit memos against tested revenue.
 
 ---
 

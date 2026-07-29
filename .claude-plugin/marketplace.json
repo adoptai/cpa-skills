@@ -5,16 +5,17 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting and tax skills for AI agents — statement extraction, bank reconciliation, tax return review, variance analysis, journal entry testing, K-1 extraction, payroll reconciliation, audit sampling, three-way match, and fixed asset tie-out",
-    "version": "1.1.0",
+    "description": "Local-first accounting and tax skills for AI agents \u2014 statement extraction, reconciliations, tax return review, variance analysis, journal entry testing, K-1 extraction, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, and revenue tracing",
+    "version": "1.2.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "Ten skills for accountants, tax professionals, controllers, and auditors: convert PDF bank statements to Excel with a completeness proof, reconcile bank statements to the general ledger, review tax returns against a checklist with evidence for every item tested, run year-over-year variance analysis with enforced explanation quality, scan a full journal entry population for anomalies, extract and foot Schedule K-1 data, reconcile payroll register to 941s to W-2/W-3 to the GL, select reproducible audit samples with MUS and stratified methods, perform a three-way match across POs, invoices and receipts, and tie the fixed asset register to the depreciation schedule and return. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
+      "description": "Thirteen skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie: bank statement extraction with a completeness proof, bank reconciliation, tax return review with evidence for every item tested, year-over-year variance with enforced explanation quality, full-population journal entry anomaly scanning, Schedule K-1 extraction footed to the entity return, four-way payroll tax reconciliation, reproducible audit sampling, three-way match across POs and invoices and receipts, fixed asset and depreciation tie-out, sales tax reconciliation with nexus screening, AR aging tie-out with every bucket recomputed, and revenue tracing from the ledger to invoice, contract and cash.",
       "source": "./",
       "skills": [
+        "./skills/ar-aging-tie-out",
         "./skills/audit-sampling",
         "./skills/bank-rec-to-gl",
         "./skills/bank-statement-to-excel",
@@ -23,6 +24,8 @@
         "./skills/k1-extract-summarize",
         "./skills/payroll-tax-reconciliation",
         "./skills/return-yoy-variance",
+        "./skills/revenue-trace-to-source",
+        "./skills/sales-tax-reconciliation",
         "./skills/tax-return-review",
         "./skills/three-way-match"
       ]
