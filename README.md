@@ -348,6 +348,16 @@ If you're subject to a written information security program, these are designed 
 it rather than around it. Nothing leaves the machine, so there's no vendor to add to your data
 map and no third party processing client data.
 
+**What the scripts actually do**, if you or your IT function scan them before installing: they
+read local files, compute, and write CSV/XLSX output. There are no network calls anywhere — no
+`requests`, no `urllib`, no sockets — and no `eval`, no dynamic imports, and no install hooks.
+The only external process any skill spawns is `ocrmypdf`, in the optional local-OCR path of
+`bank-statement-to-excel` and `k1-extract-summarize`, invoked with an absolute resolved binary
+path and list arguments (no shell) and only when you pass `--ocr`. A static scanner may score
+that call as a command-injection candidate because a command-line argument reaches a subprocess;
+the argument is a validated local PDF path passed as a single argv element, and no shell
+interprets it.
+
 `./validate-skills.sh` also fails the build if a spreadsheet, PDF, accounting export, or
 TIN-shaped string is ever committed to this repository.
 

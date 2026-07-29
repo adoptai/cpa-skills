@@ -38,7 +38,8 @@ SCAN_CHAR_THRESHOLD = 60
 
 def ocr_pdf(src: Path) -> Path:
     """Run local OCR, returning a path to a new searchable PDF. Never touches src."""
-    if not shutil.which("ocrmypdf"):
+    ocrmypdf = shutil.which("ocrmypdf")
+    if not ocrmypdf:
         sys.exit(
             "This PDF has no text layer and 'ocrmypdf' is not installed.\n"
             "Install it locally, then re-run with --ocr:\n"
@@ -46,11 +47,18 @@ def ocr_pdf(src: Path) -> Path:
             "  Debian: sudo apt install ocrmypdf tesseract-ocr\n"
             "Do not upload client tax documents to a cloud OCR service."
         )
+    # Resolve to an absolute input path and confirm it is a real PDF before handing
+    # it to another process. No shell is involved (list argv, shell=False), and the
+    # binary is the absolute path resolved above rather than a PATH lookup at spawn.
+    src = src.resolve(strict=True)
+    if not src.is_file() or src.suffix.lower() != ".pdf":
+        sys.exit(f"Not a PDF file: {src}")
+
     out = Path(tempfile.mkdtemp(prefix="ocr_")) / f"{src.stem}.ocr.pdf"
     print(f"  OCR (local): {src.name} -> {out.name}", flush=True)
     subprocess.run(
         [
-            "ocrmypdf",
+            ocrmypdf,
             "--force-ocr",
             "--deskew",
             "--optimize", "0",
