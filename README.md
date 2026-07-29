@@ -43,6 +43,8 @@ relied on and signed.
 | `cutoff-and-unrecorded-liabilities` | the search population ties, and every item is classified — unclassified is a finding |
 | `bank-rec-review` | the reconciliation is recomputed independently and every item cleared subsequently |
 | `trial-balance-integrity` | debits equal credits, every account maps to a statement line, and the mapping foots |
+| `filing-diff` | every field is accounted for as changed, added, removed or unchanged — and changes must propagate to their totals |
+| `receipts-to-expense` | each receipt's components sum to its own printed total, and every image is accounted for |
 
 Two consequences worth knowing up front:
 
@@ -151,7 +153,21 @@ applies the right procedure — including the parts practitioners skip under tim
         └───────────────────────────────┘      └──────────────────────────────┘
 
         ┌───────────────────────────────┐
+        │     receipts-to-expense       │   receipt images → expense rows
+        └───────────────┬───────────────┘
+                        │  output schema IS the input schema of
+                        ▼
+        ┌───────────────────────────────┐
         │    expense-policy-testing     │   T&E ↔ written policy, by approver
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │         filing-diff           │   version A ↔ version B, field by field
+        └───────────────┬───────────────┘
+                        │  mechanises the carryforward pass of
+                        ▼
+        ┌───────────────────────────────┐
+        │      tax-return-review        │
         └───────────────────────────────┘
 ```
 
@@ -181,6 +197,8 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [expense-policy-testing](skills/expense-policy-testing) | Tests expense, T&E, and card spend against the client's own written policy across fourteen exception types including split transactions. Organised by approver first — an approver with a high exception rate explains the other findings. |
 | [cutoff-and-unrecorded-liabilities](skills/cutoff-and-unrecorded-liabilities) | Search for unrecorded liabilities and cutoff testing, working on what was *not* recorded. Classifies on the service date, not the invoice or payment date, and treats a missing service date as unclassified rather than guessing. |
 | [bank-rec-review](skills/bank-rec-review) | Audits a reconciliation someone else prepared — recomputes from item detail, not the preparer's subtotals, and tests subsequent clearance, which is what catches a fabricated item, a stale item, and a plug alike. |
+| [filing-diff](skills/filing-diff) | Compares two versions of a filing field by field. Catches what an ordinary diff cannot: a total that did not move while its components did, a field that stayed put where a dependent one moved, and any change made after review sign-off. Tests carryforwards against the prior year as filed. |
+| [receipts-to-expense](skills/receipts-to-expense) | Receipt images to an expense spreadsheet, proved by each receipt's own internal sum — subtotal plus tax plus tip equals the printed total, a check independent of the OCR. Output schema is `expense-policy-testing`'s input schema exactly. |
 | [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
 
 ---
@@ -244,6 +262,8 @@ with no command line involved.
 | Unrecorded liabilities search | [`cutoff-and-unrecorded-liabilities.skill`](dist/cutoff-and-unrecorded-liabilities.skill) |
 | Bank rec review | [`bank-rec-review.skill`](dist/bank-rec-review.skill) |
 | Trial balance integrity | [`trial-balance-integrity.skill`](dist/trial-balance-integrity.skill) |
+| Filing diff | [`filing-diff.skill`](dist/filing-diff.skill) |
+| Receipts to expense | [`receipts-to-expense.skill`](dist/receipts-to-expense.skill) |
 
 ### Option 4: Copy and paste
 
@@ -341,6 +361,12 @@ Once installed, just describe the task:
 
 "Does our trial balance balance, and is the chart of accounts clean?"
 → trial-balance-integrity
+
+"What changed between the original and the amended return?"
+→ filing-diff
+
+"Turn these receipts into a spreadsheet"
+→ receipts-to-expense
 ```
 
 Or invoke directly:
@@ -357,6 +383,7 @@ Or invoke directly:
 ### Document extraction
 - `bank-statement-to-excel` — PDF statements to proven transaction detail
 - `k1-extract-summarize` — K-1 packages to a footed, box-by-box summary
+- `receipts-to-expense` — receipt images to expense rows, proved by internal sums
 
 ### Foundational — run before the rest
 - `trial-balance-integrity` — TB balances, every account mapped, duplicates surfaced
@@ -375,6 +402,7 @@ Or invoke directly:
 - `k1-extract-summarize` — flow-through detail for return input
 - `depreciation-tie-out` — fixed assets and Form 4562 support
 - `sales-tax-reconciliation` — multi-jurisdiction returns and nexus screening
+- `filing-diff` — amended returns, post-review changes, carryforward continuity
 - `return-yoy-variance` — prior-year comparison and analytical procedures
 
 ### Audit and assurance

@@ -3,7 +3,7 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.3.0**
+Repository version: **1.4.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
@@ -12,6 +12,8 @@ Repository version: **1.3.0**
 | `cash-flow-tieout` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `cutoff-and-unrecorded-liabilities` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `expense-policy-testing` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `filing-diff` | 1.0.0 | 2026-07-29 | Added in 1.4.0 |
+| `receipts-to-expense` | 1.0.0 | 2026-07-29 | Added in 1.4.0 |
 | `trial-balance-integrity` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `audit-sampling` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `bank-statement-to-excel` | 1.0.0 | 2026-07-28 | Initial release |
@@ -25,6 +27,36 @@ Repository version: **1.3.0**
 | `sales-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+
+---
+
+## 1.4.0 — 2026-07-29
+
+Two skills added, bringing the repository to twenty. No changes to the existing eighteen. This
+completes the list — what remains of the original fifty is either a utility with no gate, an
+overlap with something already built, retrieval rather than proof, or client correspondence that
+cannot carry a gate.
+
+**`filing-diff`** — Compares two versions of a filing field by field, and the gate is that *every*
+field is accounted for: matched plus added plus removed must equal the union across both versions.
+Matching is on field identifier, never on the printed description, because descriptions change
+between software versions and manufacture phantom additions. Two tests find what an ordinary diff
+cannot: **propagation** (the sum of component changes must equal the change in the total, so a
+total that did not move while its components did is surfaced as an override) and **suspicious
+stability** (a field that stayed put where a dependent field moved). Also isolates changes made
+after review sign-off, and tests carryforwards against the prior year as filed — which turns the
+repository's most frequent finding into a mechanical check rather than an eye test. Non-numeric
+changes are reported *ahead* of the numbers, because a changed identification number or election
+cannot be netted and often matters more than a five-figure movement.
+
+**`receipts-to-expense`** — Scanned or photographed receipts to an expense spreadsheet. What makes
+the extraction provable despite receipt OCR being genuinely poor is that most receipts carry their
+own internal proof: subtotal plus tax plus tip equals the printed total. That check is independent
+of the OCR and catches the specific failure that matters — a misread digit, or a decimal point lost
+on thermal paper. Illegible amounts become visible exceptions and are never estimated. The output
+uses **exactly** the schema `expense-policy-testing` reads, so the two chain with no translation;
+`approver` and `report_ref` are left blank deliberately, since inventing them would defeat the
+downstream approval tests.
 
 ---
 

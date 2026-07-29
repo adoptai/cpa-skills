@@ -5,14 +5,14 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, reconciliation review, and trial balance integrity",
-    "version": "1.3.0",
+    "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, reconciliation review, trial balance integrity, filing diff, and receipts",
+    "version": "1.4.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "18 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie. Covers document extraction, bank and payroll and sales tax reconciliation, tax return review, K-1 footing, variance analysis, journal entry anomaly scanning, reproducible audit sampling, three-way match, fixed asset tie-out, AR aging, revenue tracing, indirect-method cash flow proof, expense and T&E policy testing, search for unrecorded liabilities, review of a reconciliation someone else prepared, and trial balance and chart of accounts integrity.",
+      "description": "20 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
       "source": "./",
       "skills": [
         "./skills/ar-aging-tie-out",
@@ -24,9 +24,11 @@
         "./skills/cutoff-and-unrecorded-liabilities",
         "./skills/depreciation-tie-out",
         "./skills/expense-policy-testing",
+        "./skills/filing-diff",
         "./skills/journal-entry-anomaly-scan",
         "./skills/k1-extract-summarize",
         "./skills/payroll-tax-reconciliation",
+        "./skills/receipts-to-expense",
         "./skills/return-yoy-variance",
         "./skills/revenue-trace-to-source",
         "./skills/sales-tax-reconciliation",

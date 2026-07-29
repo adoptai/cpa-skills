@@ -106,12 +106,18 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     done < <(find "$skill_dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
 
     # ---- scripts referenced in SKILL.md actually exist
+    # Capture any leading path so a deliberate cross-skill reference
+    # (../other-skill/scripts/foo.py) can be recognised and skipped - those are
+    # legitimate when documenting a chain between skills.
     while IFS= read -r ref; do
         [[ -z "$ref" ]] && continue
+        [[ "$ref" == *"../"* ]] && continue      # cross-skill reference, not local
+        ref="${ref#./}"
         if [[ ! -f "$skill_dir/$ref" ]]; then
             errs+=("SKILL.md references '$ref' which does not exist")
         fi
-    done < <(grep -oE '(scripts|references|assets)/[A-Za-z0-9_./-]+' "$file" | sort -u)
+    done < <(grep -oE '[A-Za-z0-9_./-]*(scripts|references|assets)/[A-Za-z0-9_./-]+' \
+             "$file" | sort -u)
 
     # ---- Python compiles
     while IFS= read -r py; do
