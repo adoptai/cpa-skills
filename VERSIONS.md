@@ -3,15 +3,62 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.0.0**
+Repository version: **1.1.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `audit-sampling` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `bank-statement-to-excel` | 1.0.0 | 2026-07-28 | Initial release |
 | `bank-rec-to-gl` | 1.0.0 | 2026-07-28 | Initial release |
-| `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
-| `return-yoy-variance` | 1.0.0 | 2026-07-28 | Initial release |
+| `depreciation-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 | `journal-entry-anomaly-scan` | 1.0.0 | 2026-07-28 | Initial release |
+| `k1-extract-summarize` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+| `payroll-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+| `return-yoy-variance` | 1.0.0 | 2026-07-28 | Initial release |
+| `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
+| `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+
+---
+
+## 1.1.0 — 2026-07-29
+
+Five skills added. No changes to the existing five, so no workpaper produced under 1.0.0
+disagrees with a re-run.
+
+**`k1-extract-summarize`** — Extracts Schedule K-1 data box by box, preserving the code alongside
+every amount, and foots the aggregate K-1s back to the entity's Schedule K. Detects a missing K-1
+two ways: ownership percentages that do not total 100.000%, and a recipient list that does not
+reconcile in both directions. State schedules are bucketed separately from federal amounts,
+because state K-1s reuse the federal box numbers and would otherwise double-count into the
+footing test. Full TINs are rejected on input.
+
+**`payroll-tax-reconciliation`** — Four-way tie across the payroll register, the four Forms 941,
+W-2/W-3 totals, and the GL, over nine tests including a liability rollforward that isolates
+undeposited trust-fund tax. Asserts no wage base or tax rate: the Social Security wage base is
+*inferred* from the register as the cap the payroll system actually applied, and effective rates
+are computed from the filed figures so rate drift between quarters is detectable without knowing
+the correct rate. A `--rounding-tolerance` defaults to zero and reports anything it absorbs.
+
+**`audit-sampling`** — MUS/PPS, stratified, and random attribute selection. The population must
+tie to a stated control total, a seed is mandatory so the selection is re-performable, and
+negative balances require an explicit treatment decision rather than being silently dropped. The
+reliability factor is computed as `-ln(risk)`; expansion factors and attribute sample sizes are
+firm methodology and must be supplied. Projection uses tainting and compares to tolerable
+misstatement.
+
+**`three-way-match`** — PO to invoice to receiving, with the population gate that matched plus
+exceptions must equal the whole invoice population in both count and value. Duplicate detection
+runs four patterns, including same-amount-within-a-window and same-PO-line-billed-twice, which
+catch the duplicates an exact invoice-number check misses. Aggregates exceptions by vendor first,
+because the causes are process defects that cluster. Quantifies GRNI as a period-end accrual.
+
+**`depreciation-tie-out`** — Cost and accumulated depreciation rollforwards, beginning balances
+agreed to the prior year *as filed*, and asset-level integrity across seven tests. Recomputes
+straight-line exactly from the schedule's own inputs; for accelerated methods it tests internal
+consistency only and flags the rate for verification, asserting no recovery period, MACRS
+percentage, bonus rate, or Section 179 limit. Catches the four failures that account for most
+fixed-asset error: a disposed asset still depreciating, beginning accumulated that does not agree
+to the prior year, an asset depreciated past basis, and duplicate assets.
 
 ---
 

@@ -30,6 +30,11 @@ relied on and signed.
 | `tax-return-review` | every tested item carries a form/line reference **and** a source document |
 | `return-yoy-variance` | each explanation's components sum to the variance |
 | `journal-entry-anomaly-scan` | every journal entry balances before a single anomaly test runs |
+| `k1-extract-summarize` | aggregate K-1s foot to the entity return and ownership totals 100.000% |
+| `payroll-tax-reconciliation` | register, 941s, W-2/W-3 and GL agree, with no unexplained difference |
+| `audit-sampling` | the population ties to a control total and the selection is re-performable from a seed |
+| `three-way-match` | matched invoices plus exceptions equal the whole population |
+| `depreciation-tie-out` | cost and accumulated depreciation rollforwards foot, beginning equals prior-year ending |
 
 Two consequences worth knowing up front:
 
@@ -79,6 +84,33 @@ applies the right procedure — including the parts practitioners skip under tim
                         ▲
                         │  its exceptions often become
                         │  reconciling items or review notes
+
+        ┌───────────────────────────────┐
+        │    k1-extract-summarize       │   K-1 packages → footed summary
+        └───────────────┬───────────────┘
+                        │  supplies flow-through detail to
+                        ▼
+        ┌───────────────────────────────┐
+        │      tax-return-review        │
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │    depreciation-tie-out       │   FA register → schedule → return
+        └───────────────┬───────────────┘
+                        │  supports the depreciation pass of
+                        ▼
+        ┌───────────────────────────────┐
+        │      tax-return-review        │
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐      ┌──────────────────────────┐
+        │  payroll-tax-reconciliation   │      │      audit-sampling      │
+        │  register ↔ 941s ↔ W-3 ↔ GL   │      │  any population above    │
+        └───────────────────────────────┘      └──────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │       three-way-match         │   PO ↔ invoice ↔ receiving, + GRNI accrual
+        └───────────────────────────────┘
 ```
 
 Never reconcile off an unproven extract, and never analyse variances against a prior year that
@@ -95,6 +127,11 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [tax-return-review](skills/tax-return-review) | Review a prepared return against a structured checklist with evidence for every item tested. Starts with what's *missing* — dropped carryforwards, absent forms, unfiled information returns. Checklists for 1040, 1120-S, 1065, 1120, depreciation, amended. |
 | [return-yoy-variance](skills/return-yoy-variance) | Compare two years line by line under dual materiality, flag the movements *and* the suspicious non-movements, and enforce that every explanation is causal and quantified. |
 | [journal-entry-anomaly-scan](skills/journal-entry-anomaly-scan) | Full-population journal entry scan across 26 tests — duplicates, round-dollar, weekend, after-hours, self-approval, threshold circumvention, unreversed accruals, Benford — with accumulating risk scores. |
+| [k1-extract-summarize](skills/k1-extract-summarize) | Extract Schedule K-1 data box by box with the code preserved, then foot the aggregate K-1s to the entity return. Detects a missing K-1 through ownership percentages and a two-way recipient reconciliation. Full TINs rejected on input. |
+| [payroll-tax-reconciliation](skills/payroll-tax-reconciliation) | Four-way tie across the payroll register, the four Forms 941, W-2/W-3, and the GL. Infers the Social Security wage base from the data rather than asserting one, and isolates undeposited trust-fund tax. |
+| [audit-sampling](skills/audit-sampling) | MUS/PPS, stratified, and attribute selection with a mandatory seed so the sample can be re-performed exactly. Population must tie to a control total; negative balances need an explicit decision. Projects with tainting. |
+| [three-way-match](skills/three-way-match) | PO to invoice to receiving, with four duplicate-detection patterns, quantity and price tolerances, vendor-level pattern rollup, and a quantified goods-received-not-invoiced accrual. |
+| [depreciation-tie-out](skills/depreciation-tie-out) | Fixed asset register to depreciation schedule to return. Recomputes straight-line exactly; tests accelerated methods for consistency without asserting any rate. Catches disposed assets still depreciating and beginning balances that do not agree to the prior year. |
 
 ---
 
@@ -109,7 +146,7 @@ Use [npx skills](https://github.com/vercel-labs/skills):
 npx skills add adoptai/cpa-skills
 
 # Install specific skills
-npx skills add adoptai/cpa-skills --skill bank-rec-to-gl tax-return-review
+npx skills add adoptai/cpa-skills --skill bank-rec-to-gl audit-sampling
 
 # List available skills
 npx skills add adoptai/cpa-skills --list
@@ -144,6 +181,11 @@ with no command line involved.
 | Tax return review | [`tax-return-review.skill`](dist/tax-return-review.skill) |
 | YoY variance | [`return-yoy-variance.skill`](dist/return-yoy-variance.skill) |
 | JE anomaly scan | [`journal-entry-anomaly-scan.skill`](dist/journal-entry-anomaly-scan.skill) |
+| K-1 extract & summarize | [`k1-extract-summarize.skill`](dist/k1-extract-summarize.skill) |
+| Payroll tax reconciliation | [`payroll-tax-reconciliation.skill`](dist/payroll-tax-reconciliation.skill) |
+| Audit sampling | [`audit-sampling.skill`](dist/audit-sampling.skill) |
+| Three-way match | [`three-way-match.skill`](dist/three-way-match.skill) |
+| Depreciation tie-out | [`depreciation-tie-out.skill`](dist/depreciation-tie-out.skill) |
 
 ### Option 4: Copy and paste
 
@@ -202,6 +244,21 @@ Once installed, just describe the task:
 
 "Scan the GL for unusual journal entries"
 → journal-entry-anomaly-scan
+
+"Summarize these K-1s and tell me if any are missing"
+→ k1-extract-summarize
+
+"Do our 941s tie to the W-3?"
+→ payroll-tax-reconciliation
+
+"Select 40 receivables for confirmation"
+→ audit-sampling
+
+"Did we pay any of these invoices twice?"
+→ three-way-match
+
+"Does our depreciation schedule tie to the return?"
+→ depreciation-tie-out
 ```
 
 Or invoke directly:
@@ -217,18 +274,29 @@ Or invoke directly:
 
 ### Document extraction
 - `bank-statement-to-excel` — PDF statements to proven transaction detail
+- `k1-extract-summarize` — K-1 packages to a footed, box-by-box summary
 
 ### Reconciliation and close
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
+- `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
+- `depreciation-tie-out` — fixed asset rollforward and schedule agreement
+- `three-way-match` — AP completeness and the GRNI accrual
 - `return-yoy-variance` — period-over-period variance with enforced explanations
 
 ### Tax
 - `tax-return-review` — checklist review with evidence for every item tested
+- `k1-extract-summarize` — flow-through detail for return input
+- `depreciation-tie-out` — fixed assets and Form 4562 support
 - `return-yoy-variance` — prior-year comparison and analytical procedures
 
 ### Audit and assurance
+- `audit-sampling` — reproducible MUS, stratified, and attribute selection
 - `journal-entry-anomaly-scan` — full-population JE testing with risk ranking
+- `three-way-match` — purchasing and payables control testing
 - `bank-rec-to-gl` — cash existence and completeness support
+
+### Payroll
+- `payroll-tax-reconciliation` — four-way tie, trust-fund exposure, employee-level integrity
 
 ---
 
