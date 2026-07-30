@@ -3,7 +3,7 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.4.0**
+Repository version: **1.5.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
@@ -12,7 +12,9 @@ Repository version: **1.4.0**
 | `cash-flow-tieout` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `cutoff-and-unrecorded-liabilities` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `expense-policy-testing` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
+| `audit-workpaper` | 1.0.0 | 2026-07-31 | Added in 1.5.0 |
 | `filing-diff` | 1.0.0 | 2026-07-29 | Added in 1.4.0 |
+| `month-end-close-checklist` | 1.0.0 | 2026-07-31 | Added in 1.5.0 |
 | `receipts-to-expense` | 1.0.0 | 2026-07-29 | Added in 1.4.0 |
 | `trial-balance-integrity` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `audit-sampling` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
@@ -27,6 +29,38 @@ Repository version: **1.4.0**
 | `sales-tax-reconciliation` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `tax-return-review` | 1.0.0 | 2026-07-28 | Initial release |
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
+
+---
+
+## 1.5.0 — 2026-07-31
+
+Two skills added, bringing the repository to twenty-two. No changes to the existing twenty.
+Both were chosen for search demand as well as gate strength, and in both cases the
+differentiation is the same: the market is saturated with static templates, and a template
+cannot check itself.
+
+**`month-end-close-checklist`** — Derived from the client's own trial balance rather than a
+generic template. Every account with movement generates a task, with the **procedure assigned
+from what the account actually is** — a cash account gets a bank reconciliation, a fixed asset
+account gets a rollforward — and the task names the skill in this repository that performs it.
+The gate is a completeness test, not a to-do list: reconciled plus waived plus open plus blocked
+must equal the population of accounts with movement. An account absent from the checklist
+entirely is reported as **not considered** rather than silently defaulted to open, because the
+usual close failure is not a forgotten task — it is an account nobody knew to look at. In
+testing, six accounts that moved were never on the checklist, including a suspense account
+holding a balance, long-term debt, wages and retained earnings.
+
+**`audit-workpaper`** — Documents objective, population, procedures, evidence, exceptions and
+conclusion, then validates that **the conclusion is actually supported by what was documented.**
+The most frequently cited documentation deficiency in inspection is not a missing signature but
+a conclusion the file does not support — typically "no exceptions noted" on a workpaper that
+never records what was examined. So the core test is a consistency check: the conclusion may not
+assert an absence of problems while exceptions are recorded, may not claim agreement where a
+difference is non-zero, and may not draw positive assurance where a step has no evidence. It is
+deliberately hard to satisfy by rewording, because a conclusion that acknowledges its exceptions
+and explains why they do not change the outcome is what a defensible conclusion looks like
+anyway. The skill does **not** write the conclusion — reaching it is the professional judgement
+and is the one thing that cannot be delegated.
 
 ---
 

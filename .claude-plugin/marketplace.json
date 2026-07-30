@@ -5,18 +5,19 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting and tax skills for AI agents \u2014 extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, audit sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, reconciliation review, trial balance integrity, filing diff, and receipts",
-    "version": "1.4.0",
+    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, and trial balance integrity",
+    "version": "1.5.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "20 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
+      "description": "22 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
       "source": "./",
       "skills": [
         "./skills/ar-aging-tie-out",
         "./skills/audit-sampling",
+        "./skills/audit-workpaper",
         "./skills/bank-rec-review",
         "./skills/bank-rec-to-gl",
         "./skills/bank-statement-to-excel",
@@ -27,6 +28,7 @@
         "./skills/filing-diff",
         "./skills/journal-entry-anomaly-scan",
         "./skills/k1-extract-summarize",
+        "./skills/month-end-close-checklist",
         "./skills/payroll-tax-reconciliation",
         "./skills/receipts-to-expense",
         "./skills/return-yoy-variance",

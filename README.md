@@ -45,6 +45,8 @@ relied on and signed.
 | `trial-balance-integrity` | debits equal credits, every account maps to a statement line, and the mapping foots |
 | `filing-diff` | every field is accounted for as changed, added, removed or unchanged — and changes must propagate to their totals |
 | `receipts-to-expense` | each receipt's components sum to its own printed total, and every image is accounted for |
+| `month-end-close-checklist` | every account with movement is reconciled, waived with a reason, or open — nothing is merely absent |
+| `audit-workpaper` | the conclusion must be consistent with the exceptions recorded — "no exceptions noted" is refused when exceptions exist |
 
 Two consequences worth knowing up front:
 
@@ -199,6 +201,8 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [bank-rec-review](skills/bank-rec-review) | Audits a reconciliation someone else prepared — recomputes from item detail, not the preparer's subtotals, and tests subsequent clearance, which is what catches a fabricated item, a stale item, and a plug alike. |
 | [filing-diff](skills/filing-diff) | Compares two versions of a filing field by field. Catches what an ordinary diff cannot: a total that did not move while its components did, a field that stayed put where a dependent one moved, and any change made after review sign-off. Tests carryforwards against the prior year as filed. |
 | [receipts-to-expense](skills/receipts-to-expense) | Receipt images to an expense spreadsheet, proved by each receipt's own internal sum — subtotal plus tax plus tip equals the printed total, a check independent of the OCR. Output schema is `expense-policy-testing`'s input schema exactly. |
+| [month-end-close-checklist](skills/month-end-close-checklist) | A close checklist derived from your trial balance, not a generic template. Assigns the right procedure per account from what the account is, and names the skill that performs it. An account absent from the checklist is reported as *not considered* — the usual close failure. |
+| [audit-workpaper](skills/audit-workpaper) | Objective, population, procedures, evidence, exceptions, conclusion — then validates that the conclusion is supported. Refuses "no exceptions noted" when exceptions exist, which is the most frequently cited documentation deficiency in inspection. |
 | [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
 
 ---
@@ -264,6 +268,8 @@ with no command line involved.
 | Trial balance integrity | [`trial-balance-integrity.skill`](dist/trial-balance-integrity.skill) |
 | Filing diff | [`filing-diff.skill`](dist/filing-diff.skill) |
 | Receipts to expense | [`receipts-to-expense.skill`](dist/receipts-to-expense.skill) |
+| Month-end close checklist | [`month-end-close-checklist.skill`](dist/month-end-close-checklist.skill) |
+| Audit workpaper | [`audit-workpaper.skill`](dist/audit-workpaper.skill) |
 
 ### Option 4: Copy and paste
 
@@ -367,6 +373,12 @@ Once installed, just describe the task:
 
 "Turn these receipts into a spreadsheet"
 → receipts-to-expense
+
+"Where are we on the month-end close?" / "build a close checklist"
+→ month-end-close-checklist
+
+"Write up this workpaper" / "does this workpaper support the conclusion?"
+→ audit-workpaper
 ```
 
 Or invoke directly:
@@ -387,6 +399,7 @@ Or invoke directly:
 
 ### Foundational — run before the rest
 - `trial-balance-integrity` — TB balances, every account mapped, duplicates surfaced
+- `month-end-close-checklist` — what still needs reconciling, derived from your own TB
 
 ### Reconciliation and close
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
@@ -411,6 +424,7 @@ Or invoke directly:
 - `cutoff-and-unrecorded-liabilities` — completeness of liabilities and cutoff
 - `bank-rec-review` — auditing a reconciliation someone else prepared
 - `expense-policy-testing` — T&E and card spend against written policy
+- `audit-workpaper` — documentation whose conclusion is validated against its evidence
 - `journal-entry-anomaly-scan` — full-population JE testing with risk ranking
 - `three-way-match` — purchasing and payables control testing
 - `ar-aging-tie-out` — receivable existence, valuation, and cutoff
