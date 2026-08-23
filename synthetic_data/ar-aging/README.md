@@ -22,7 +22,7 @@ methodology" below.
 | Date range | 2025-10-01 through 2026-06-30 (one deliberate exception, see edge case 9) |
 | Customers | 40 (30 randomized "normal" + 10 dedicated edge-case customers) |
 | Transactions | 439 |
-| Invoice amounts | $559.15 – $80,906.27 |
+| Invoice amounts | $577.21 – $80,906.27 |
 | Currency | USD only (single-currency, documented simplification) |
 | Bucket boundaries | 30 / 60 / 90 days **past due** |
 
