@@ -1,0 +1,41 @@
+customer_id,customer_name,payment_terms,credit_limit,is_active
+CUST-001,Harborview Fabrication Corp.,Net 45,71000,true
+CUST-002,Bristlecone Logistics LLC,Net 60,12000,true
+CUST-003,Meridian Office Supply Co.,Net 30,136000,true
+CUST-004,Falcon Ridge Industrial Inc.,Net 45,39500,true
+CUST-005,Cobalt Point Distributors Corp.,Net 15,34000,true
+CUST-006,Amberlane Freight Inc.,Net 15,53000,true
+CUST-007,Northwind Packaging Co Corp.,Net 45,93000,true
+CUST-008,Silverton Hardware LLC,Net 30,41000,true
+CUST-009,Cedar Hollow Electrical Co.,Net 60,81500,true
+CUST-010,Bluepeak Machine Works Inc.,Net 30,117000,true
+CUST-011,Ironvale Sheet Metal Co.,Net 45,48000,true
+CUST-012,Windmere Textiles Co.,Net 45,121500,true
+CUST-013,Granite Bay Wholesale Inc.,Net 45,39500,true
+CUST-014,Copper Creek Supply Co.,Net 30,46500,true
+CUST-015,Fairview Print & Signage Co.,Net 45,5000,true
+CUST-016,Redstone Contract Furnishings LLC,Net 15,79500,true
+CUST-017,Larkspur Foodservice Equipment Inc.,Net 45,23000,true
+CUST-018,Thornbury Plastics Co.,Net 30,34500,true
+CUST-019,Ashgrove Building Materials Inc.,Net 15,117000,true
+CUST-020,Wrenfield Tooling Co.,Net 30,23000,false
+CUST-021,Maple Ledge Distribution Inc.,Net 45,7000,true
+CUST-022,Stonebriar Industrial Parts Corp.,Net 45,61500,true
+CUST-023,Quarrystone Logistics Co.,Net 60,26000,true
+CUST-024,Hollowbrook Packaging LLC,Net 15,82500,true
+CUST-025,Elmsworth Wholesale Co.,Net 60,5000,false
+CUST-026,Pinecrest Supply Chain Inc.,Net 60,105000,true
+CUST-027,Rustwood Fasteners Co.,Net 60,145000,true
+CUST-028,Briarcliff Textiles LLC,Net 15,5500,true
+CUST-029,Oakmere Distributors LLC,Net 60,26000,true
+CUST-030,Sablefield Equipment Rental Co.,Net 30,107500,false
+CUST-031,Boundary Thirty Corp LLC,Net 45,41500,true
+CUST-032,Boundary Sixty Corp LLC,Net 60,146000,true
+CUST-033,Boundary Ninety Corp Inc.,Net 45,55000,true
+CUST-034,Partial Pay Industries Co.,Net 30,36000,true
+CUST-035,Multi-Invoice Payers LLC Corp.,Net 60,23500,true
+CUST-036,Overpaid Credit Co Corp.,Net 30,99000,true
+CUST-037,Unapplied Cash Ventures Corp.,Net 30,70000,true
+CUST-038,Fully Settled Supply LLC,Net 30,20500,true
+CUST-039,Future Dated Freight Corp.,Net 60,7000,true
+CUST-040,Net Credit Holdings LLC,Net 45,107500,true
