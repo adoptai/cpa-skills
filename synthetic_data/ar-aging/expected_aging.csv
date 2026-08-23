@@ -5,7 +5,7 @@ CUST-003,Meridian Office Supply Co.,30981.66,0.0,0.0,0.0,23378.26,54359.92
 CUST-004,Falcon Ridge Industrial Inc.,3589.81,0.0,0.0,0.0,5416.63,9006.44
 CUST-005,Cobalt Point Distributors Corp.,26749.82,0.0,0.0,0.0,3442.02,30191.84
 CUST-006,Amberlane Freight Inc.,0.0,4584.76,0.0,0.0,40433.86,45018.62
-CUST-007,Northwind Packaging Co Corp.,30217.35,6240.76,10967.11,11378.92,30911.25,89715.39
+CUST-007,Northwind Packaging Corp.,30217.35,6240.76,10967.11,11378.92,30911.25,89715.39
 CUST-008,Silverton Hardware LLC,0.0,38404.91,0.0,0.0,9502.84,47907.75
 CUST-009,Cedar Hollow Electrical Co.,22538.35,0.0,0.0,12270.67,102616.22,137425.24
 CUST-010,Bluepeak Machine Works Inc.,0.0,0.0,0.0,0.0,33655.04,33655.04
@@ -29,12 +29,12 @@ CUST-027,Rustwood Fasteners Co.,30420.66,0.0,0.0,0.0,55814.24,86234.9
 CUST-028,Briarcliff Textiles LLC,0.0,3557.3,15034.34,0.0,23770.88,42362.52
 CUST-029,Oakmere Distributors LLC,24207.4,0.0,0.0,13680.82,38145.73,76033.95
 CUST-030,Sablefield Equipment Rental Co.,6578.45,13400.37,0.0,618.67,33529.48,54126.97
-CUST-031,Boundary Thirty Corp LLC,0.0,12000.0,0.0,0.0,0.0,12000.0
-CUST-032,Boundary Sixty Corp LLC,0.0,0.0,8400.0,0.0,0.0,8400.0
-CUST-033,Boundary Ninety Corp Inc.,0.0,0.0,0.0,15250.0,0.0,15250.0
+CUST-031,Boundary Thirty LLC,0.0,12000.0,0.0,0.0,0.0,12000.0
+CUST-032,Boundary Sixty LLC,0.0,0.0,8400.0,0.0,0.0,8400.0
+CUST-033,Boundary Ninety Inc.,0.0,0.0,0.0,15250.0,0.0,15250.0
 CUST-034,Partial Pay Industries Co.,0.0,0.0,3500.0,0.0,0.0,3500.0
-CUST-035,Multi-Invoice Payers LLC Corp.,0.0,0.0,5000.0,0.0,0.0,5000.0
-CUST-036,Overpaid Credit Co Corp.,0.0,-1000.0,0.0,0.0,0.0,-1000.0
+CUST-035,Multi-Invoice Payers Corp.,0.0,0.0,5000.0,0.0,0.0,5000.0
+CUST-036,Overpaid Credit Corp.,0.0,-1000.0,0.0,0.0,0.0,-1000.0
 CUST-037,Unapplied Cash Ventures Corp.,0.0,-2500.0,0.0,0.0,15000.0,12500.0
 CUST-038,Fully Settled Supply LLC,0.0,0.0,0.0,0.0,0.0,0.0
 CUST-039,Future Dated Freight Corp.,0.0,4200.0,0.0,0.0,0.0,4200.0

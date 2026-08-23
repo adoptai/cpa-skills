@@ -88,6 +88,21 @@ foots for every row.
    originally due, not from the date of the last application against it.
 4. **Zero-balance invoices are excluded** — a fully paid or fully written-off invoice
    contributes `$0` to every bucket, i.e. it doesn't appear.
+
+   **Write-off convention, pinned:** a `writeoff` row nets against its invoice exactly
+   like a payment or credit memo — it is not a separate lifecycle state. The moment a
+   write-off transaction is dated on or before the as-of date, the invoice's net balance
+   goes to zero and it drops out of the aging **immediately**, the same run in which it's
+   computed. There is no interim state where a written-off invoice stays visible "until
+   period close" — this generator has no such concept, and neither should a skill reading
+   this fixture. (A write-off dated *after* the as-of date wouldn't apply yet, by the same
+   cutoff rule as any other application — see point 6 — but this dataset doesn't exercise
+   that combination.) Concretely: `TXN-000285` writes off the full `3,474.53` balance of
+   `INV-100174` (`CUST-020`) on `2026-01-13`; that invoice contributes nothing to
+   `CUST-020`'s row in `expected_aging.csv`. 14 such write-offs are scattered through the
+   bulk data (`grep writeoff ar_transactions.csv`); there is no dedicated `CUST-03x` case
+   for this one; instead the bulk data carries it since it doesn't need isolation to be
+   unambiguous — netting to zero is the same rule already exercised by edge case 8.
 5. **Unapplied cash/credit** (blank `applied_to_invoice`) has no invoice to inherit a
    due date from, so it is aged from **its own `txn_date`** instead
    (`days_past_due = as_of - txn_date`). This is a deliberate modeling choice — the
@@ -102,17 +117,17 @@ foots for every row.
 Ten customers, `CUST-031` through `CUST-040`, are hand-authored so each edge case is
 isolated and traceable. (Bulk/"normal" activity lives on `CUST-001`–`CUST-030`.)
 
-### 1. Invoice due exactly 30 days past due — `CUST-031` / Boundary Thirty Corp
+### 1. Invoice due exactly 30 days past due — `CUST-031` / Boundary Thirty
 Invoice `INV-970100`, due 2026-05-31.
 `days_past_due = 2026-06-30 − 2026-05-31 = 30` → boundary, falls in **1-30** (not
 31-60). `1-30 = 12,000.00`.
 
-### 2. Invoice due exactly 60 days past due — `CUST-032` / Boundary Sixty Corp
+### 2. Invoice due exactly 60 days past due — `CUST-032` / Boundary Sixty
 Invoice `INV-100258`, due 2026-05-01.
 `days_past_due = 2026-06-30 − 2026-05-01 = 60` → boundary, falls in **31-60**.
 `31-60 = 8,400.00`.
 
-### 3. Invoice due exactly 90 days past due — `CUST-033` / Boundary Ninety Corp
+### 3. Invoice due exactly 90 days past due — `CUST-033` / Boundary Ninety
 Invoice `INV-100259`, due 2026-04-01.
 `days_past_due = 2026-06-30 − 2026-04-01 = 90` → boundary, falls in **61-90**.
 `61-90 = 15,250.00`.
@@ -132,7 +147,7 @@ One remittance, same date (2026-06-20), split into two ledger rows:
 
 Both residuals land in the same bucket: `31-60 = 2,000.00 + 3,000.00 = 5,000.00`.
 
-### 6. Credit memo overpaying an invoice (negative balance) — `CUST-036` / Overpaid Credit Co
+### 6. Credit memo overpaying an invoice (negative balance) — `CUST-036` / Overpaid Credit
 Invoice `INV-100262` for `5,000.00`, due 2026-06-10. Credit memo of `6,000.00` applied
 against it. Balance `= 5,000.00 − 6,000.00 = −1,000.00` (a credit).
 `days_past_due = 2026-06-30 − 2026-06-10 = 20` → **1-30**, still aged by the invoice's

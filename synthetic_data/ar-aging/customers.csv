@@ -5,7 +5,7 @@ CUST-003,Meridian Office Supply Co.,Net 30,136000,true
 CUST-004,Falcon Ridge Industrial Inc.,Net 45,39500,true
 CUST-005,Cobalt Point Distributors Corp.,Net 15,34000,true
 CUST-006,Amberlane Freight Inc.,Net 15,53000,true
-CUST-007,Northwind Packaging Co Corp.,Net 45,93000,true
+CUST-007,Northwind Packaging Corp.,Net 45,93000,true
 CUST-008,Silverton Hardware LLC,Net 30,41000,true
 CUST-009,Cedar Hollow Electrical Co.,Net 60,81500,true
 CUST-010,Bluepeak Machine Works Inc.,Net 30,117000,true
@@ -29,12 +29,12 @@ CUST-027,Rustwood Fasteners Co.,Net 60,145000,true
 CUST-028,Briarcliff Textiles LLC,Net 15,5500,true
 CUST-029,Oakmere Distributors LLC,Net 60,26000,true
 CUST-030,Sablefield Equipment Rental Co.,Net 30,107500,false
-CUST-031,Boundary Thirty Corp LLC,Net 45,41500,true
-CUST-032,Boundary Sixty Corp LLC,Net 60,146000,true
-CUST-033,Boundary Ninety Corp Inc.,Net 45,55000,true
+CUST-031,Boundary Thirty LLC,Net 45,41500,true
+CUST-032,Boundary Sixty LLC,Net 60,146000,true
+CUST-033,Boundary Ninety Inc.,Net 45,55000,true
 CUST-034,Partial Pay Industries Co.,Net 30,36000,true
-CUST-035,Multi-Invoice Payers LLC Corp.,Net 60,23500,true
-CUST-036,Overpaid Credit Co Corp.,Net 30,99000,true
+CUST-035,Multi-Invoice Payers Corp.,Net 60,23500,true
+CUST-036,Overpaid Credit Corp.,Net 30,99000,true
 CUST-037,Unapplied Cash Ventures Corp.,Net 30,70000,true
 CUST-038,Fully Settled Supply LLC,Net 30,20500,true
 CUST-039,Future Dated Freight Corp.,Net 60,7000,true

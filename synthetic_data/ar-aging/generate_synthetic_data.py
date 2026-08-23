@@ -44,7 +44,7 @@ TERMS_CHOICES = ["Net 15", "Net 30", "Net 45", "Net 60"]
 NORMAL_NAMES = [
     "Harborview Fabrication", "Bristlecone Logistics", "Meridian Office Supply",
     "Falcon Ridge Industrial", "Cobalt Point Distributors", "Amberlane Freight",
-    "Northwind Packaging Co", "Silverton Hardware", "Cedar Hollow Electrical",
+    "Northwind Packaging", "Silverton Hardware", "Cedar Hollow Electrical",
     "Bluepeak Machine Works", "Ironvale Sheet Metal", "Windmere Textiles",
     "Granite Bay Wholesale", "Copper Creek Supply", "Fairview Print & Signage",
     "Redstone Contract Furnishings", "Larkspur Foodservice Equipment",
@@ -55,8 +55,8 @@ NORMAL_NAMES = [
     "Oakmere Distributors", "Sablefield Equipment Rental",
 ]
 EDGE_NAMES = [
-    "Boundary Thirty Corp", "Boundary Sixty Corp", "Boundary Ninety Corp",
-    "Partial Pay Industries", "Multi-Invoice Payers LLC", "Overpaid Credit Co",
+    "Boundary Thirty", "Boundary Sixty", "Boundary Ninety",
+    "Partial Pay Industries", "Multi-Invoice Payers", "Overpaid Credit",
     "Unapplied Cash Ventures", "Fully Settled Supply", "Future Dated Freight",
     "Net Credit Holdings",
 ]
