@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.5.0**
+Repository version: **1.6.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `flux-narrative` | 1.0.0 | 2026-09-09 | Added in 1.6.0 |
 | `ar-aging-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `bank-rec-review` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
 | `cash-flow-tieout` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
@@ -31,6 +32,23 @@ Repository version: **1.5.0**
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 
 ---
+
+## 1.6.0 — 2026-09-09
+
+One skill added, bringing the repository to twenty-three.
+
+**`flux-narrative`** — Period-over-period trial balance comparison with the same dual
+dollar-and-percent materiality and always-flag conditions (sign flip, new/disappeared account,
+unchanged-but-activity-changed, round-number plug) as `return-yoy-variance`, its annual-comparison
+sibling. The addition is the **draft-then-confirm mechanism**: given optional prior-period
+commentary, a flagged account that was already explained last period gets that explanation
+carried into the worklist as a labeled, unconfirmed draft rather than a blank cell. A draft is
+never treated as an explanation. It closes only once a reviewer confirms it with this period's
+own quantified components and an evidence reference, which is the gate: `status != confirmed`
+means unexplained, however plausible the drafted cause reads. Tested against a fixture where a
+draft's carried-forward cause no longer matched the current period's actual driver — confirming
+it unedited produced components that did not sum to the variance, and the run correctly reported
+INCOMPLETE with a non-zero exit code.
 
 ## 1.5.0 — 2026-07-31
 

@@ -29,6 +29,7 @@ relied on and signed.
 | `bank-rec-to-gl` | the unexplained difference is exactly `0.00` |
 | `tax-return-review` | every tested item carries a form/line reference **and** a source document |
 | `return-yoy-variance` | each explanation's components sum to the variance |
+| `flux-narrative` | every flagged movement is confirmed with quantified components that sum to the variance — a carried-forward draft never counts on its own |
 | `journal-entry-anomaly-scan` | every journal entry balances before a single anomaly test runs |
 | `k1-extract-summarize` | aggregate K-1s foot to the entity return and ownership totals 100.000% |
 | `payroll-tax-reconciliation` | register, 941s, W-2/W-3 and GL agree, with no unexplained difference |
@@ -89,6 +90,10 @@ applies the right procedure — including the parts practitioners skip under tim
         ┌───────────────────────────────┐
         │      tax-return-review        │   checklist + evidence for every item
         └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │       flux-narrative          │   two TBs → movement + draft-then-confirm narrative
+        └───────────────────────────────┘   return-yoy-variance's month-over-month sibling
 
         ┌───────────────────────────────┐
         │  journal-entry-anomaly-scan   │   full-population GL scan, risk-ranked
@@ -186,6 +191,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [bank-rec-to-gl](skills/bank-rec-to-gl) | Reconcile a bank statement to the GL cash account through a six-pass matching cascade, then produce the four-column reconciliation, the journal entries for unrecorded bank items, and aged outstanding-item schedules. |
 | [tax-return-review](skills/tax-return-review) | Review a prepared return against a structured checklist with evidence for every item tested. Starts with what's *missing* — dropped carryforwards, absent forms, unfiled information returns. Checklists for 1040, 1120-S, 1065, 1120, depreciation, amended. |
 | [return-yoy-variance](skills/return-yoy-variance) | Compare two years line by line under dual materiality, flag the movements *and* the suspicious non-movements, and enforce that every explanation is causal and quantified. |
+| [flux-narrative](skills/flux-narrative) | Period-over-period flux between two trial balances under the same dual materiality model, with a draft-then-confirm mechanism: a flagged account already explained last period gets that cause carried forward as a labeled, unconfirmed draft — never a fabricated one — that a reviewer must confirm with this period's own quantified components before it counts. |
 | [journal-entry-anomaly-scan](skills/journal-entry-anomaly-scan) | Full-population journal entry scan across 26 tests — duplicates, round-dollar, weekend, after-hours, self-approval, threshold circumvention, unreversed accruals, Benford — with accumulating risk scores. |
 | [k1-extract-summarize](skills/k1-extract-summarize) | Extract Schedule K-1 data box by box with the code preserved, then foot the aggregate K-1s to the entity return. Detects a missing K-1 through ownership percentages and a two-way recipient reconciliation. Full TINs rejected on input. |
 | [payroll-tax-reconciliation](skills/payroll-tax-reconciliation) | Four-way tie across the payroll register, the four Forms 941, W-2/W-3, and the GL. Infers the Social Security wage base from the data rather than asserting one, and isolates undeposited trust-fund tax. |
@@ -270,6 +276,7 @@ with no command line involved.
 | Receipts to expense | [`receipts-to-expense.skill`](dist/receipts-to-expense.skill) |
 | Month-end close checklist | [`month-end-close-checklist.skill`](dist/month-end-close-checklist.skill) |
 | Audit workpaper | [`audit-workpaper.skill`](dist/audit-workpaper.skill) |
+| Flux narrative | [`flux-narrative.skill`](dist/flux-narrative.skill) |
 
 ### Option 4: Copy and paste
 
@@ -379,6 +386,9 @@ Once installed, just describe the task:
 
 "Write up this workpaper" / "does this workpaper support the conclusion?"
 → audit-workpaper
+
+"Why did this account move month over month?" / "draft the flux commentary"
+→ flux-narrative
 ```
 
 Or invoke directly:
@@ -409,6 +419,7 @@ Or invoke directly:
 - `three-way-match` — AP completeness and the GRNI accrual
 - `ar-aging-tie-out` — receivables agreement and the allowance
 - `return-yoy-variance` — period-over-period variance with enforced explanations
+- `flux-narrative` — month-over-month flux with draft-then-confirm narratives
 
 ### Tax
 - `tax-return-review` — checklist review with evidence for every item tested
