@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.6.0**
+Repository version: **1.7.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `balance-sheet-recon-pack` | 1.0.0 | 2026-09-17 | Added in 1.7.0 |
 | `flux-narrative` | 1.0.0 | 2026-09-09 | Added in 1.6.0 |
 | `ar-aging-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
 | `bank-rec-review` | 1.0.0 | 2026-07-29 | Added in 1.3.0 |
@@ -32,6 +33,32 @@ Repository version: **1.6.0**
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 
 ---
+
+## 1.7.0 — 2026-09-17
+
+One skill added, bringing the repository to twenty-four.
+
+**`balance-sheet-recon-pack`** — `bank-rec-to-gl` proves cash; this proves the rest of the
+balance sheet the same way, account by account, across the full chart. For every asset,
+liability, and equity account it computes an unexplained difference as GL balance minus
+(supporting schedule plus itemized, dated reconciling items), and that unexplained figure must
+be exactly zero — never plugged — before an account can be reconciled. The addition beyond a
+per-account tie is **sign-off as a tracked fact, not an assertion**: an account only reaches
+`RECONCILED` with both a preparer and a reviewer name and date on record; a difference of zero
+with no signature is `TIED - NOT SIGNED`, a distinct and lesser status. The pack-level gate is
+completeness — every balance sheet account from the trial balance must appear as reconciled,
+exception, tied-but-unsigned, or not received, with none silently dropped — and the pack is
+reportable as `COMPLETE` only when every account is `RECONCILED`. Recurring reconciling items are
+tracked across periods the same way `bank-rec-to-gl` tracks them within one account. Deliberately
+does not decide whether an account should be reconciled at all this period (that waiver judgment
+stays with `month-end-close-checklist`) and does not perform the account-specific procedure
+itself — it names the repository skill that supplies each account's schedule (`bank-rec-to-gl`
+for cash, `ar-aging-tie-out` for receivables, `depreciation-tie-out` for fixed assets, and so on)
+and proves the chart is covered. Tested against a fixture where a receivable account's schedule
+tied to the penny but carried no reviewer of record: the account correctly reported
+`PREPARED - NOT REVIEWED` rather than `RECONCILED`, and a second fixture with a one-cent
+unexplained difference on a payables account correctly reported `EXCEPTION` rather than rounding
+it away, holding the whole pack to `INCOMPLETE` with a non-zero exit code.
 
 ## 1.6.0 — 2026-09-09
 

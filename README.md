@@ -48,6 +48,7 @@ relied on and signed.
 | `receipts-to-expense` | each receipt's components sum to its own printed total, and every image is accounted for |
 | `month-end-close-checklist` | every account with movement is reconciled, waived with a reason, or open — nothing is merely absent |
 | `audit-workpaper` | the conclusion must be consistent with the exceptions recorded — "no exceptions noted" is refused when exceptions exist |
+| `balance-sheet-recon-pack` | every balance sheet account's unexplained difference is exactly `0.00`, and nothing counts as reconciled without both a preparer and a reviewer on record |
 
 Two consequences worth knowing up front:
 
@@ -80,6 +81,11 @@ applies the right procedure — including the parts practitioners skip under tim
                         ▼
         ┌───────────────────────────────┐
         │        bank-rec-to-gl         │   bank ↔ GL, four-column rec + JEs
+        └───────────────┬───────────────┘
+                        │  one account's proof feeds into
+                        ▼
+        ┌───────────────────────────────┐
+        │   balance-sheet-recon-pack    │   every BS account, same discipline, one pack
         └───────────────────────────────┘
 
         ┌───────────────────────────────┐
@@ -210,6 +216,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [month-end-close-checklist](skills/month-end-close-checklist) | A close checklist derived from your trial balance, not a generic template. Assigns the right procedure per account from what the account is, and names the skill that performs it. An account absent from the checklist is reported as *not considered* — the usual close failure. |
 | [audit-workpaper](skills/audit-workpaper) | Objective, population, procedures, evidence, exceptions, conclusion — then validates that the conclusion is supported. Refuses "no exceptions noted" when exceptions exist, which is the most frequently cited documentation deficiency in inspection. |
 | [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
+| [balance-sheet-recon-pack](skills/balance-sheet-recon-pack) | `bank-rec-to-gl`'s discipline extended to every balance sheet account: GL balance, supporting schedule, itemized reconciling items, and a sign-off that requires a named preparer and reviewer before an account counts as reconciled. Names the skill that supplies each account's schedule. |
 
 ---
 
@@ -277,6 +284,7 @@ with no command line involved.
 | Month-end close checklist | [`month-end-close-checklist.skill`](dist/month-end-close-checklist.skill) |
 | Audit workpaper | [`audit-workpaper.skill`](dist/audit-workpaper.skill) |
 | Flux narrative | [`flux-narrative.skill`](dist/flux-narrative.skill) |
+| Balance sheet recon pack | [`balance-sheet-recon-pack.skill`](dist/balance-sheet-recon-pack.skill) |
 
 ### Option 4: Copy and paste
 
@@ -389,6 +397,9 @@ Once installed, just describe the task:
 
 "Why did this account move month over month?" / "draft the flux commentary"
 → flux-narrative
+
+"Build the balance sheet reconciliation pack" / "which accounts are reconciled this month?"
+→ balance-sheet-recon-pack
 ```
 
 Or invoke directly:
@@ -413,6 +424,7 @@ Or invoke directly:
 
 ### Reconciliation and close
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
+- `balance-sheet-recon-pack` — every balance sheet account, same discipline, one pack
 - `cash-flow-tieout` — indirect-method cash flow proved to the balance sheet
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
