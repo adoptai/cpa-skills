@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.7.0**
+Repository version: **1.8.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `accrual-proposals` | 1.0.0 | 2026-09-23 | Added in 1.8.0 |
 | `balance-sheet-recon-pack` | 1.0.0 | 2026-09-17 | Added in 1.7.0 |
 | `flux-narrative` | 1.0.0 | 2026-09-09 | Added in 1.6.0 |
 | `ar-aging-tie-out` | 1.0.0 | 2026-07-29 | Added in 1.2.0 |
@@ -33,6 +34,27 @@ Repository version: **1.7.0**
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 
 ---
+
+## 1.8.0 — 2026-09-23
+
+One skill added, bringing the repository to twenty-five.
+
+**`accrual-proposals`** — Inverts `cutoff-and-unrecorded-liabilities`: instead of proving a
+search for what was missed is complete, this proposes what to book, from open POs with goods
+or services received but not yet invoiced (GRNI), recurring vendor spend patterns, and
+preparer-supplied one-time items. Every open-PO candidate is cross-checked against the AP
+register specifically so a stale "invoiced" figure on the PO report cannot produce a duplicate
+accrual, and every recurring-vendor candidate is dropped against the current period's AP
+register the same way. A recurring accrual requires a minimum number of prior periods of
+history (configurable, default three) or it becomes an exception rather than an estimate built
+on too little data. Every proposed line carries a non-blank basis and an explicit reversal
+flag — a non-reversing item requires its own stated rationale, never a default — and the batch
+must balance debit to credit before it is written. Nothing is posted: the deliverable is a
+proposed journal entry batch, with a mirrored auto-reversal schedule, for a Controller to
+approve. Tested against a fixture with a PO whose "invoiced" amount on the report did not match
+the AP register, a vendor with only one period of history, and a manual item with no basis: all
+three correctly landed as exceptions rather than proposals, and the batch that was produced
+balanced to the penny.
 
 ## 1.7.0 — 2026-09-17
 

@@ -5,16 +5,17 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, trial balance integrity, and full-chart balance sheet reconciliation",
-    "version": "1.7.0",
+    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, accrual proposals, trial balance integrity, and full-chart balance sheet reconciliation",
+    "version": "1.8.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "24 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
+      "description": "25 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
       "source": "./",
       "skills": [
+        "./skills/accrual-proposals",
         "./skills/ar-aging-tie-out",
         "./skills/audit-sampling",
         "./skills/audit-workpaper",
