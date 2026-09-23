@@ -1,0 +1,40 @@
+name: AR aging fixture drift check
+
+# expected_aging.csv is a hand-verified ground truth (see synthetic_data/ar-aging/README.md).
+# It's committed alongside the generator that produces it, not derived at test time, so a
+# future edit to generate_synthetic_data.py can silently invalidate it without anyone
+# noticing. This regenerates from the pinned seed (20260630) and fails if the output no
+# longer matches what's committed.
+
+on:
+  push:
+    paths:
+      - "synthetic_data/ar-aging/**"
+  pull_request:
+    paths:
+      - "synthetic_data/ar-aging/**"
+
+jobs:
+  regenerate-and-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Regenerate customers.csv, ar_transactions.csv, expected_aging.csv from seed 20260630
+        run: python3 synthetic_data/ar-aging/generate_synthetic_data.py
+
+      - name: Diff regenerated output against committed fixtures
+        run: |
+          if ! git diff --exit-code -- \
+              synthetic_data/ar-aging/customers.csv \
+              synthetic_data/ar-aging/ar_transactions.csv \
+              synthetic_data/ar-aging/expected_aging.csv; then
+            echo ""
+            echo "::error::synthetic_data/ar-aging fixtures no longer match generate_synthetic_data.py's output."
+            echo "::error::If this change to the generator is intentional, rerun it locally and commit the regenerated CSVs."
+            exit 1
+          fi
