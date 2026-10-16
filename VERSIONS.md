@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.8.0**
+Repository version: **1.9.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `intercompany-recon` | 1.0.0 | 2026-10-16 | Added in 1.9.0 |
 | `accrual-proposals` | 1.0.0 | 2026-09-23 | Added in 1.8.0 |
 | `balance-sheet-recon-pack` | 1.0.0 | 2026-09-17 | Added in 1.7.0 |
 | `flux-narrative` | 1.0.0 | 2026-09-09 | Added in 1.6.0 |

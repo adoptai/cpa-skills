@@ -50,6 +50,7 @@ relied on and signed.
 | `month-end-close-checklist` | every account with movement is reconciled, waived with a reason, or open — nothing is merely absent |
 | `audit-workpaper` | the conclusion must be consistent with the exceptions recorded — "no exceptions noted" is refused when exceptions exist |
 | `balance-sheet-recon-pack` | every balance sheet account's unexplained difference is exactly `0.00`, and nothing counts as reconciled without both a preparer and a reviewer on record |
+| `intercompany-recon` | every unmatched leg or amount-mismatched pair is confirmed with a cause before it's excluded from the unexplained total, and eliminations are proposed only for the portion already proven |
 
 Two consequences worth knowing up front:
 
@@ -88,6 +89,10 @@ applies the right procedure — including the parts practitioners skip under tim
         ┌───────────────────────────────┐
         │   balance-sheet-recon-pack    │   every BS account, same discipline, one pack
         └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
+        │     intercompany-recon        │   due to/due from across entities, + eliminations
+        └───────────────────────────────┘   same cascade as bank-rec-to-gl, mirrored across entities
 
         ┌───────────────────────────────┐
         │     return-yoy-variance       │   PY vs CY, explained variances
@@ -219,6 +224,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [audit-workpaper](skills/audit-workpaper) | Objective, population, procedures, evidence, exceptions, conclusion — then validates that the conclusion is supported. Refuses "no exceptions noted" when exceptions exist, which is the most frequently cited documentation deficiency in inspection. |
 | [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
 | [balance-sheet-recon-pack](skills/balance-sheet-recon-pack) | `bank-rec-to-gl`'s discipline extended to every balance sheet account: GL balance, supporting schedule, itemized reconciling items, and a sign-off that requires a named preparer and reviewer before an account counts as reconciled. Names the skill that supplies each account's schedule. |
+| [intercompany-recon](skills/intercompany-recon) | Matches each entity's leg of every intercompany transaction against its counterparty's mirror leg across currencies, flags every mismatch with a likely cause — timing, FX difference, missing entry, data error — and proposes consolidation eliminations only for the position already proven. |
 
 ---
 
@@ -427,6 +433,7 @@ Or invoke directly:
 ### Reconciliation and close
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
 - `balance-sheet-recon-pack` — every balance sheet account, same discipline, one pack
+- `intercompany-recon` — due to/due from across entities, with proposed eliminations
 - `cash-flow-tieout` — indirect-method cash flow proved to the balance sheet
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
