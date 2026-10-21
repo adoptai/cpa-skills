@@ -51,6 +51,7 @@ relied on and signed.
 | `audit-workpaper` | the conclusion must be consistent with the exceptions recorded — "no exceptions noted" is refused when exceptions exist |
 | `balance-sheet-recon-pack` | every balance sheet account's unexplained difference is exactly `0.00`, and nothing counts as reconciled without both a preparer and a reviewer on record |
 | `intercompany-recon` | every unmatched leg or amount-mismatched pair is confirmed with a cause before it's excluded from the unexplained total, and eliminations are proposed only for the portion already proven |
+| `cash-application` | every deposit dollar is applied, confirmed with a classification, or left visibly in the exception queue — nothing is force-applied to the nearest invoice |
 
 Two consequences worth knowing up front:
 
@@ -157,6 +158,15 @@ applies the right procedure — including the parts practitioners skip under tim
         └───────────────────────────────┘      └──────────────────────────────┘
 
         ┌───────────────────────────────┐
+        │      cash-application         │   deposits ↔ remittances ↔ open AR
+        └───────────────┬───────────────┘   clears the open balance ar-aging-tie-out ages
+                        │  applied cash reduces the balance
+                        ▼
+        ┌───────────────────────────────┐
+        │       ar-aging-tie-out        │
+        └───────────────────────────────┘
+
+        ┌───────────────────────────────┐
         │   trial-balance-integrity     │   run this FIRST - everything else
         └───────────────┬───────────────┘   assumes the TB is sound
                         │  underpins every skill above and below
@@ -225,6 +235,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [trial-balance-integrity](skills/trial-balance-integrity) | Run first on a new client, cleanup, or conversion. Debits equalling credits proves almost nothing; this proves every account maps to a statement line, the mapping foots, and surfaces duplicates like `Repairs & Maintenance` versus `Repairs and Maintenance`. |
 | [balance-sheet-recon-pack](skills/balance-sheet-recon-pack) | `bank-rec-to-gl`'s discipline extended to every balance sheet account: GL balance, supporting schedule, itemized reconciling items, and a sign-off that requires a named preparer and reviewer before an account counts as reconciled. Names the skill that supplies each account's schedule. |
 | [intercompany-recon](skills/intercompany-recon) | Matches each entity's leg of every intercompany transaction against its counterparty's mirror leg across currencies, flags every mismatch with a likely cause — timing, FX difference, missing entry, data error — and proposes consolidation eliminations only for the position already proven. |
+| [cash-application](skills/cash-application) | Matches bank deposits and remittance advices to open AR invoices through a cascade — remittance detail, embedded invoice numbers, exact and lump-sum amount matching — and refuses to force-apply a short-pay or overpayment to the nearest invoice. Everything left over goes to an exception queue with candidates, not a guess. |
 
 ---
 
@@ -439,6 +450,7 @@ Or invoke directly:
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
 - `three-way-match` — AP completeness and the GRNI accrual
 - `ar-aging-tie-out` — receivables agreement and the allowance
+- `cash-application` — deposits and remittances matched to open AR, exceptions queued
 - `return-yoy-variance` — period-over-period variance with enforced explanations
 - `flux-narrative` — month-over-month flux with draft-then-confirm narratives
 
