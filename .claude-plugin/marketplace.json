@@ -5,14 +5,14 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, accrual proposals, trial balance integrity, full-chart balance sheet reconciliation, intercompany reconciliation, and cash application",
-    "version": "1.10.0",
+    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, accrual proposals, trial balance integrity, full-chart balance sheet reconciliation, intercompany reconciliation, cash application, and multi-entity consolidation rollup",
+    "version": "1.11.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "27 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
+      "description": "28 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
       "source": "./",
       "skills": [
         "./skills/accrual-proposals",
@@ -25,6 +25,7 @@
         "./skills/bank-statement-to-excel",
         "./skills/cash-application",
         "./skills/cash-flow-tieout",
+        "./skills/consolidation-rollup",
         "./skills/cutoff-and-unrecorded-liabilities",
         "./skills/depreciation-tie-out",
         "./skills/expense-policy-testing",

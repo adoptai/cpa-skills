@@ -52,6 +52,7 @@ relied on and signed.
 | `balance-sheet-recon-pack` | every balance sheet account's unexplained difference is exactly `0.00`, and nothing counts as reconciled without both a preparer and a reviewer on record |
 | `intercompany-recon` | every unmatched leg or amount-mismatched pair is confirmed with a cause before it's excluded from the unexplained total, and eliminations are proposed only for the portion already proven |
 | `cash-application` | every deposit dollar is applied, confirmed with a classification, or left visibly in the exception queue — nothing is force-applied to the nearest invoice |
+| `consolidation-rollup` | every entity TB balances, every account maps to a consolidated line, every elimination entry balances, and the consolidated TB ties with CTA computed as a formula, never a plug |
 
 Two consequences worth knowing up front:
 
@@ -93,7 +94,12 @@ applies the right procedure — including the parts practitioners skip under tim
 
         ┌───────────────────────────────┐
         │     intercompany-recon        │   due to/due from across entities, + eliminations
-        └───────────────────────────────┘   same cascade as bank-rec-to-gl, mirrored across entities
+        └───────────────┬───────────────┘   same cascade as bank-rec-to-gl, mirrored across entities
+                        │  proven eliminations post into
+                        ▼
+        ┌───────────────────────────────┐
+        │     consolidation-rollup      │   entity TBs → one consolidated TB, FX + CTA + eliminations
+        └───────────────────────────────┘   every consolidated figure traces to its entity source
 
         ┌───────────────────────────────┐
         │     return-yoy-variance       │   PY vs CY, explained variances
@@ -236,6 +242,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [balance-sheet-recon-pack](skills/balance-sheet-recon-pack) | `bank-rec-to-gl`'s discipline extended to every balance sheet account: GL balance, supporting schedule, itemized reconciling items, and a sign-off that requires a named preparer and reviewer before an account counts as reconciled. Names the skill that supplies each account's schedule. |
 | [intercompany-recon](skills/intercompany-recon) | Matches each entity's leg of every intercompany transaction against its counterparty's mirror leg across currencies, flags every mismatch with a likely cause — timing, FX difference, missing entry, data error — and proposes consolidation eliminations only for the position already proven. |
 | [cash-application](skills/cash-application) | Matches bank deposits and remittance advices to open AR invoices through a cascade — remittance detail, embedded invoice numbers, exact and lump-sum amount matching — and refuses to force-apply a short-pay or overpayment to the nearest invoice. Everything left over goes to an exception queue with candidates, not a guess. |
+| [consolidation-rollup](skills/consolidation-rollup) | Rolls up multiple entities' trial balances into one consolidated TB — chart-of-accounts mapping, FX translation by statement type, and worksheet-level elimination entries — with the cumulative translation adjustment computed as the exact residual of the required rate mix, never a plug, and every consolidated figure traced to its entity source. |
 
 ---
 
@@ -445,6 +452,7 @@ Or invoke directly:
 - `bank-rec-to-gl` — bank to general ledger, with proposed journal entries
 - `balance-sheet-recon-pack` — every balance sheet account, same discipline, one pack
 - `intercompany-recon` — due to/due from across entities, with proposed eliminations
+- `consolidation-rollup` — entity TBs to one consolidated TB, with FX, CTA, and eliminations
 - `cash-flow-tieout` — indirect-method cash flow proved to the balance sheet
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement

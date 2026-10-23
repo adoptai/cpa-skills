@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.10.0**
+Repository version: **1.11.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `consolidation-rollup` | 1.0.0 | 2026-10-23 | Added in 1.11.0 |
 | `cash-application` | 1.0.0 | 2026-10-21 | Added in 1.10.0 |
 | `intercompany-recon` | 1.0.0 | 2026-10-16 | Added in 1.9.0 |
 | `accrual-proposals` | 1.0.0 | 2026-09-23 | Added in 1.8.0 |
@@ -36,6 +37,26 @@ Repository version: **1.10.0**
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 
 ---
+
+## 1.11.0 — 2026-10-23
+
+One skill added, bringing the repository to twenty-eight.
+
+**`consolidation-rollup`** — Rolls up two or more entities' trial balances into one consolidated
+trial balance: a chart-of-accounts mapping places every entity account on a consolidated line and
+a statement type, FX translation applies the rate that statement type implies (closing for
+assets/liabilities, average for revenue/expense, historical for equity), and consolidation
+elimination entries post at the worksheet level in reporting currency. The cumulative translation
+adjustment is computed as the exact, derivable residual of using different required rates across
+an entity's own statement sections — a formula, never a plug — and is reported as its own named
+equity line, distinct from an unmapped account or an unbalanced elimination entry, either of which
+fails its own gate test instead of being absorbed into CTA. Does not split non-controlling
+interest for a partially-owned entity (flagged, not computed) and does not derive an intercompany
+elimination amount itself — pair it with `intercompany-recon` for that. Tested against a fixture
+with a deliberately unbalanced entity TB, an unbalanced elimination entry, an unmapped account, a
+missing FX rate, and an unreconciled intercompany pair: each was caught by its own named gate test
+and excluded or flagged rather than silently absorbed, while the happy-path fixture's consolidated
+total still tied to the cent with CTA included.
 
 ## 1.8.0 — 2026-09-23
 
