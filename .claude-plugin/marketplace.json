@@ -5,45 +5,59 @@
     "url": "https://adopt.ai"
   },
   "metadata": {
-    "description": "Local-first accounting, tax and audit skills for AI agents \u2014 month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, prepaid amortization, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, accrual proposals, trial balance integrity, full-chart balance sheet reconciliation, intercompany reconciliation, cash application, and multi-entity consolidation rollup",
-    "version": "1.12.0",
+    "description": "Local-first accounting, tax and audit skills for AI agents — month-end close, audit workpapers, extraction, reconciliations, tax review, variance, flux analysis, journal entry testing, K-1s, payroll, sampling, three-way match, fixed assets, prepaid amortization, sales tax, AR aging, revenue tracing, cash flow, expense policy, unrecorded liabilities, accrual proposals, trial balance integrity, full-chart balance sheet reconciliation, intercompany reconciliation, cash application, multi-entity consolidation rollup, deferred revenue and ARR waterfalls, AP invoice coding and duplicate payment detection, vendor statement reconciliation, 13-week cash forecasting, budget vs actual, board package assembly, collections dunning, FX revaluation, ASC 842 lease tie-out, debt covenant compliance, commission recalculation, and audit PBC assembly",
+    "version": "1.26.0",
     "repository": "https://github.com/adoptai/cpa-skills"
   },
   "plugins": [
     {
       "name": "cpa-skills",
-      "description": "29 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
+      "description": "43 skills for accountants, tax professionals, controllers, and auditors. Every skill runs entirely on the local machine and refuses to deliver a workpaper that does not tie.",
       "source": "./",
       "skills": [
         "./skills/accrual-proposals",
         "./skills/ar-aging-tie-out",
+        "./skills/arr-waterfall",
         "./skills/audit-sampling",
         "./skills/audit-workpaper",
         "./skills/balance-sheet-recon-pack",
         "./skills/bank-rec-review",
         "./skills/bank-rec-to-gl",
         "./skills/bank-statement-to-excel",
+        "./skills/board-package-builder",
+        "./skills/budget-vs-actual",
         "./skills/cash-application",
         "./skills/cash-flow-tieout",
+        "./skills/commission-recalc",
         "./skills/consolidation-rollup",
         "./skills/cutoff-and-unrecorded-liabilities",
+        "./skills/debt-covenant-check",
+        "./skills/deferred-revenue-waterfall",
         "./skills/depreciation-tie-out",
+        "./skills/dunning-drafts",
+        "./skills/duplicate-payment-scan",
         "./skills/expense-policy-testing",
         "./skills/filing-diff",
         "./skills/flux-narrative",
+        "./skills/fx-revaluation",
         "./skills/intercompany-recon",
+        "./skills/invoice-coding",
         "./skills/journal-entry-anomaly-scan",
         "./skills/k1-extract-summarize",
+        "./skills/lease-schedule-tie-out",
         "./skills/month-end-close-checklist",
         "./skills/payroll-tax-reconciliation",
+        "./skills/pbc-assembler",
         "./skills/prepaid-amortization",
         "./skills/receipts-to-expense",
         "./skills/return-yoy-variance",
         "./skills/revenue-trace-to-source",
         "./skills/sales-tax-reconciliation",
         "./skills/tax-return-review",
+        "./skills/thirteen-week-cash-forecast",
         "./skills/three-way-match",
-        "./skills/trial-balance-integrity"
+        "./skills/trial-balance-integrity",
+        "./skills/vendor-statement-recon"
       ]
     }
   ]

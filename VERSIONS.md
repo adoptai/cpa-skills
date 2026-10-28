@@ -3,10 +3,24 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.12.0**
+Repository version: **1.26.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `arr-waterfall` | 1.0.0 | 2026-10-28 | Added in 1.26.0 |
+| `pbc-assembler` | 1.0.0 | 2026-10-28 | Added in 1.25.0 |
+| `commission-recalc` | 1.0.0 | 2026-10-28 | Added in 1.24.0 |
+| `debt-covenant-check` | 1.0.0 | 2026-10-28 | Added in 1.23.0 |
+| `lease-schedule-tie-out` | 1.0.0 | 2026-10-28 | Added in 1.22.0 |
+| `fx-revaluation` | 1.0.0 | 2026-10-28 | Added in 1.21.0 |
+| `dunning-drafts` | 1.0.0 | 2026-10-28 | Added in 1.20.0 |
+| `board-package-builder` | 1.0.0 | 2026-10-28 | Added in 1.19.0 |
+| `budget-vs-actual` | 1.0.0 | 2026-10-28 | Added in 1.18.0 |
+| `thirteen-week-cash-forecast` | 1.0.0 | 2026-10-28 | Added in 1.17.0 |
+| `vendor-statement-recon` | 1.0.0 | 2026-10-28 | Added in 1.16.0 |
+| `duplicate-payment-scan` | 1.0.0 | 2026-10-28 | Added in 1.15.0 |
+| `invoice-coding` | 1.0.0 | 2026-10-28 | Added in 1.14.0 |
+| `deferred-revenue-waterfall` | 1.0.0 | 2026-10-28 | Added in 1.13.0 |
 | `prepaid-amortization` | 1.0.0 | 2026-10-28 | Added in 1.12.0 |
 | `consolidation-rollup` | 1.0.0 | 2026-10-23 | Added in 1.11.0 |
 | `cash-application` | 1.0.0 | 2026-10-21 | Added in 1.10.0 |
@@ -38,6 +52,105 @@ Repository version: **1.12.0**
 | `three-way-match` | 1.0.0 | 2026-07-29 | Added in 1.1.0 |
 
 ---
+
+## 1.13.0 – 1.26.0 — 2026-10-28
+
+Fourteen skills added in one batch, bringing the repository to forty-three. Each still ships
+under its own version bump in the table above and has its own gate; they are grouped here only
+because they landed together.
+
+**`deferred-revenue-waterfall`** — Builds the per-contract deferred revenue waterfall from a
+contract/invoice export and ties ending deferred balances to the GL. Only `straight_line`
+contracts are mechanically recognized; `milestone` and `usage` contracts are routed whole to a
+Judgment tab rather than recognized on an assumed pattern. A contract missing its recognition
+method, service-start, or service-end date is an exception, never defaulted. Tested against a
+fixture with a wrong GL ending balance: the gate correctly blocked the workbook and reported the
+exact unreconciled difference before a corrected figure produced a clean tie.
+
+**`arr-waterfall`** — Classifies every customer's MRR movement (new, expansion, contraction,
+churn) between a prior and current subscription extract, including a customer who drops out of
+the current file entirely, which is still classified Churn rather than silently dropped. The
+waterfall identity (beginning + new + expansion − contraction − churn = ending) is checked as a
+closed arithmetic fact, and ending ARR must tie to the supplied GL revenue figure. Pairs with
+`deferred-revenue-waterfall` — both read subscription data but answer different questions.
+
+**`fx-revaluation`** — Revalues only GL rows explicitly flagged monetary, against a client-supplied
+period-end rate table; a missing rate for a currency in use is a blocked gate, never defaulted to
+1.00. Building this surfaced a real bug — the first draft summed gain/loss into a single contra
+line instead of booking a proper two-line self-balancing entry per account, which made the
+balance gate unconditionally fail — fixed before release. Rolls forward CTA and logs excluded
+nonmonetary accounts for transparency rather than skipping them silently.
+
+**`invoice-coding`** — Proposes GL coding from a vendor's own historical coding frequency, with a
+computed confidence (the account's actual historical share for that vendor, not an invented
+score). A vendor with no history, or a proposed account missing or inactive on the chart of
+accounts, routes to the exception queue rather than being guessed from the line description.
+
+**`duplicate-payment-scan`** — Full-population, four-tier duplicate scan across the AP
+registers (exact invoice-number duplicate, same vendor/amount within a configurable day window,
+cross-vendor-name-variant matches, and reused payment references), with coverage proven by
+reconciling parsed-plus-unparsed row counts back to the population. Testing surfaced a bug where
+a planted duplicate record wasn't landing in the unscanned bucket, producing a spurious internal
+reconciliation error; fixed before release.
+
+**`vendor-statement-recon`** — Reconciles vendor statements to the AP subledger per vendor,
+classifying every line as matched, missing-from-subledger, disputed, or (for open subledger lines
+with no statement match) in-subledger-not-on-statement. The reconciling total must tie to the
+subledger's open balance or report a named, quantified difference; proposed next actions are
+explicitly labeled as suggestions, never a determination that a discrepancy is resolved.
+
+**`thirteen-week-cash-forecast`** — Places every AR, AP, payroll, and recurring-item row into one
+of thirteen weekly buckets or an explicit beyond-horizon bucket, with AR collection timing driven
+entirely by a client-supplied assumptions table rather than an invented rule. The core gate is an
+arithmetic identity: beginning balance plus the sum of all thirteen weeks' net flows must equal
+the week-13 ending balance exactly. Supports a reforecast mode that compares actuals only for
+weeks where actuals were actually supplied.
+
+**`budget-vs-actual`** — Reuses `return-yoy-variance`'s enforced-explanation gate: any
+variance exceeding its applicable threshold (account-level threshold wins over department-level
+wins over global, all client-supplied) must carry an explanation, and where components are
+supplied for one, they must sum to the variance exactly. The report states plainly that it is
+incomplete while the Unexplained Variance tab is non-empty.
+
+**`board-package-builder`** — Assembles P&L, balance sheet, and KPI page directly from a trial
+balance that must first pass a debits-equal-credits check, the same hard gate `trial-balance-integrity`
+applies. Every figure on the package is traced back to the specific TB account(s) behind it; a KPI
+whose formula can't be fully mapped to TB accounts is listed as not computed rather than estimated,
+and cash flow is only built when prior-period comparatives are actually supplied.
+
+**`dunning-drafts`** — Drafts, but never sends, collection emails per the client's own escalation
+policy (bucket thresholds and templates are entirely client-supplied). An invoice flagged disputed
+is excluded from its customer's draft and routed to a separate review queue — if every one of a
+customer's overdue invoices is disputed, no draft is produced for them at all — and every drafted
+dollar total is tied exactly to the non-disputed invoices behind it.
+
+**`commission-recalc`** — Recomputes commission per deal from a tiered, client-supplied comp plan
+in effect on the deal's close date, splitting a deal across tiers when it straddles a boundary.
+A deal with no matching plan, or a plan tier with a blank rate, is an exception rather than a
+flat-rate guess. Recomputed totals are tied to the payroll register by rep and period, with any
+gap reported as a named dollar discrepancy, never netted away.
+
+**`debt-covenant-check`** — Computes covenant ratios strictly from a client-supplied
+account-to-component mapping and a client-supplied threshold file sourced from the actual credit
+agreement — a covenant with no threshold supplied is never computed, rather than assumed against a
+"typical" bank covenant. Requires the trial balance to balance first, the same hard gate
+`trial-balance-integrity` applies. An early-warning headroom band is only raised when the user
+explicitly supplies one; omitting it just means no early-warning flag, documented plainly.
+
+**`lease-schedule-tie-out`** — Recomputes ASC 842 amortization schedules from a client-supplied
+discount rate and term per lease (never assumed), and ties the recomputed ending lease liability
+and ROU asset to the GL. Any lease with a modification date is excluded from mechanical recompute
+and routed whole to a Judgment tab, since remeasurement is a professional determination. Building
+this caught a real bug — the original draft tied the GL to the lease's balance at its end date
+rather than at the stated period end, which would have falsely validated any in-progress lease
+against a zero GL balance; fixed before release.
+
+**`pbc-assembler`** — Matches an auditor's PBC request list against a local document-folder
+listing using keywords the client supplies per request, never keywords invented from the request's
+free-text description. Every request resolves to exactly one of matched (with the matching file
+and keyword shown), gap, or no-keywords-supplied — and a match is explicitly labeled "candidate
+evidence located," not "request satisfied," since confirming the document actually answers the
+request remains the reviewer's call.
 
 ## 1.11.0 — 2026-10-23
 
