@@ -3,10 +3,11 @@
 Version history for the skills in this repository. Bump the version when a skill's behavior
 changes in a way that affects its output, and add a line here.
 
-Repository version: **1.11.0**
+Repository version: **1.12.0**
 
 | Skill | Version | Last changed | Notes |
 |---|---|---|---|
+| `prepaid-amortization` | 1.0.0 | 2026-10-28 | Added in 1.12.0 |
 | `consolidation-rollup` | 1.0.0 | 2026-10-23 | Added in 1.11.0 |
 | `cash-application` | 1.0.0 | 2026-10-21 | Added in 1.10.0 |
 | `intercompany-recon` | 1.0.0 | 2026-10-16 | Added in 1.9.0 |

@@ -36,6 +36,7 @@ relied on and signed.
 | `audit-sampling` | the population ties to a control total and the selection is re-performable from a seed |
 | `three-way-match` | matched invoices plus exceptions equal the whole population |
 | `depreciation-tie-out` | cost and accumulated depreciation rollforwards foot, beginning equals prior-year ending |
+| `prepaid-amortization` | the schedule rollforward foots, beginning equals the prior period as closed, and recomputed straight-line amortization agrees to what the schedule shows |
 | `sales-tax-reconciliation` | returns tie to the ledger, the liability rollforward foots, and every jurisdiction with sales has a return or a documented nexus conclusion |
 | `ar-aging-tie-out` | the aging ties to the GL control account **and** every bucket recomputes from the invoice date |
 | `revenue-trace-to-source` | every selection links to invoice, contract and cash — or it is an exception, not a test |
@@ -139,6 +140,10 @@ applies the right procedure — including the parts practitioners skip under tim
         │      tax-return-review        │
         └───────────────────────────────┘
 
+        ┌───────────────────────────────┐
+        │    prepaid-amortization       │   same tie-out pattern, the other recurring schedule
+        └───────────────────────────────┘   invoice list/schedule → recompute → GL tie → catch-up JEs
+
         ┌───────────────────────────────┐      ┌──────────────────────────┐
         │  payroll-tax-reconciliation   │      │      audit-sampling      │
         │  register ↔ 941s ↔ W-3 ↔ GL   │      │  any population above    │
@@ -226,6 +231,7 @@ doesn't agree to the return as filed. The skills cross-reference each other wher
 | [audit-sampling](skills/audit-sampling) | MUS/PPS, stratified, and attribute selection with a mandatory seed so the sample can be re-performed exactly. Population must tie to a control total; negative balances need an explicit decision. Projects with tainting. |
 | [three-way-match](skills/three-way-match) | PO to invoice to receiving, with four duplicate-detection patterns, quantity and price tolerances, vendor-level pattern rollup, and a quantified goods-received-not-invoiced accrual. |
 | [depreciation-tie-out](skills/depreciation-tie-out) | Fixed asset register to depreciation schedule to return. Recomputes straight-line exactly; tests accelerated methods for consistency without asserting any rate. Catches disposed assets still depreciating and beginning balances that do not agree to the prior year. |
+| [prepaid-amortization](skills/prepaid-amortization) | Builds or verifies a prepaid expense schedule, recomputes straight-line amortization from each item's own cost and service dates, ties the ending balance and current-period amortization to the GL, and proposes catch-up or reversing journal entries for any gap — never posting, only proposing. Catches a service period that ended with a balance still outstanding. |
 | [sales-tax-reconciliation](skills/sales-tax-reconciliation) | Filed returns to the sales ledger to the GL, with a liability rollforward that isolates collected-but-unremitted tax. Derives rates from the returns and produces a nexus *screening* schedule rather than a conclusion. Separates marketplace-facilitated sales throughout. |
 | [ar-aging-tie-out](skills/ar-aging-tie-out) | Ties the aging to the GL control account and then recomputes every bucket from the invoice date — because the total can agree while the aging is wrong. Grosses up netted credits, tests cutoff, and uses subsequent receipts to separate collection timing from valuation. |
 | [revenue-trace-to-source](skills/revenue-trace-to-source) | Traces revenue from the GL through invoice, contract, delivery and cash. States direction and assertion explicitly, since this tests occurrence and cannot detect unrecorded revenue. Matches subsequent credit memos against tested revenue. |
@@ -456,6 +462,7 @@ Or invoke directly:
 - `cash-flow-tieout` — indirect-method cash flow proved to the balance sheet
 - `payroll-tax-reconciliation` — register, 941s, W-2/W-3 and GL in one tie
 - `depreciation-tie-out` — fixed asset rollforward and schedule agreement
+- `prepaid-amortization` — prepaid schedule rollforward, recomputation, and GL tie-out
 - `three-way-match` — AP completeness and the GRNI accrual
 - `ar-aging-tie-out` — receivables agreement and the allowance
 - `cash-application` — deposits and remittances matched to open AR, exceptions queued
